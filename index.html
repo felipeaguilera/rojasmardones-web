@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rodrigo Rojas Mardones — Artist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+  <script src="https://gumroad.com/js/gumroad.js"></script>
+  <style>
+    :root {
+      --bg:      #0a0a0a;
+      --surface: #111111;
+      --border:  #222222;
+      --text:    #ffffff;
+      --muted:   #888888;
+      --faint:   #333333;
+      --font:    'Space Grotesk', sans-serif;
+      --nav-h:   64px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 400; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ── NAV ──────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 100; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 40px;
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.scrolled { background: rgba(10,10,10,0.96); backdrop-filter: blur(12px); border-color: var(--border); }
+    .nav-logo { opacity: 0; transition: opacity 0.4s; }
+    .nav.scrolled .nav-logo { opacity: 1; }
+    .nav-logo svg { height: 22px; width: auto; display: block; }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--text); font-size: 22px; }
+
+    .mobile-menu { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 200; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 28px; font-weight: 300; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--text); }
+    .mobile-menu-close { position: absolute; top: 20px; right: 24px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 24px; }
+
+    /* ── HERO ─────────────────────────────────── */
+    .hero { height: 100svh; min-height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    .hero-logo { width: min(480px, 70vw); }
+    .hero-logo svg { width: 100%; height: auto; }
+    .hero-sub { margin-top: 28px; font-size: 11px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .hero-scroll { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--faint); animation: nudge 2.4s ease-in-out infinite; }
+    .hero-scroll i { font-size: 18px; }
+    @keyframes nudge { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+    /* ── SHARED SECTION HEADER ────────────────── */
+    .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 40px; flex-wrap: wrap; gap: 16px; }
+    .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .section-link { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s; }
+    .section-link:hover { color: var(--text); }
+
+    /* ── WORK ─────────────────────────────────── */
+    .work { padding: 96px 40px; }
+    .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+
+    .work-card { display: flex; flex-direction: column; background: var(--surface); }
+    .work-card.featured { grid-column: span 2; }
+    .work-card-img { position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: zoom-in; }
+    .work-card.featured .work-card-img { aspect-ratio: 2/1; }
+    .work-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.25,.46,.45,.94); }
+    .work-card:hover .work-card-img img { transform: scale(1.05); }
+
+    .work-card-caption { padding: 12px 14px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .work-card-text { min-width: 0; }
+    .work-card-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .work-card-meta { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+
+    a.btn-buy {
+      flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); border: 1px solid var(--faint);
+      padding: 6px 12px; transition: all 0.2s; white-space: nowrap;
+      background: transparent !important; background-image: none !important;
+    }
+    a.btn-buy:hover { color: var(--text); border-color: var(--text); }
+
+    /* ── ABOUT ────────────────────────────────── */
+    .about { border-top: 1px solid var(--border); padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .about-content h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+    .about-bio { font-size: 16px; line-height: 1.75; color: #cccccc; margin-bottom: 18px; max-width: 480px; }
+    .about-exh { margin: 28px 0 32px; }
+    .about-exh h3 { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .about-exh li { font-size: 14px; color: #aaa; padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 10px; }
+    .about-exh li::before { content: '—'; color: var(--faint); font-size: 12px; flex-shrink: 0; }
+    .about-img-wrap { position: sticky; top: calc(var(--nav-h) + 24px); }
+    .about-img { aspect-ratio: 3/4; overflow: hidden; background: var(--surface); }
+    .about-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .about-img-caption { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 0; }
+
+    /* ── CONTACT ──────────────────────────────── */
+    .contact { border-top: 1px solid var(--border); padding: 80px 40px; }
+    .contact-headline { font-size: clamp(32px, 5vw, 64px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 56px; max-width: 720px; }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+
+    /* Contact items */
+    .contact-items { display: flex; flex-direction: column; }
+    .contact-item { display: flex; align-items: center; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); transition: opacity 0.2s; }
+    .contact-item:first-child { border-top: 1px solid var(--border); }
+    .contact-item:hover { opacity: 0.7; }
+    .contact-item-icon { width: 40px; height: 40px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+    .contact-item-type { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .contact-item-value { font-size: 15px; }
+
+    /* Inline form */
+    .contact-form {}
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .form-group input, .form-group textarea {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); font-family: var(--font); font-size: 15px;
+      padding: 12px 14px; outline: none; transition: border-color 0.2s;
+      border-radius: 0; appearance: none;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--muted); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--faint); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .btn-submit { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; background: var(--text); color: var(--bg); padding: 14px 28px; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-submit:hover { background: #ccc; }
+    .form-note { font-size: 11px; color: var(--faint); margin-top: 14px; }
+
+    /* ── FOOTER ───────────────────────────────── */
+    footer { border-top: 1px solid var(--border); }
+
+    .footer-top { padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-copy { font-size: 11px; color: var(--muted); }
+    .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+    .footer-links a { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* Legal accordion — pure HTML, zero JS */
+    .legal-accordion { border-top: 1px solid var(--border); }
+    .legal-accordion summary {
+      padding: 20px 40px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      list-style: none; user-select: none;
+      transition: color 0.2s;
+    }
+    .legal-accordion summary::-webkit-details-marker { display: none; }
+    .legal-accordion summary:hover { color: var(--text); }
+    .legal-accordion[open] summary { color: var(--text); border-bottom: 1px solid var(--border); }
+    .legal-accordion summary::after { content: '+'; font-size: 18px; font-weight: 300; }
+    .legal-accordion[open] summary::after { content: '−'; }
+
+    .legal-body { padding: 40px 40px 56px; max-width: 760px; }
+    .legal-block { margin-bottom: 36px; }
+    .legal-block h3 { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .legal-block p, .legal-block address { font-size: 14px; line-height: 1.75; color: #aaa; margin-bottom: 12px; font-style: normal; }
+    .legal-block a { color: var(--muted); border-bottom: 1px solid var(--faint); }
+
+    /* ── LIGHTBOX ─────────────────────────────── */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.96); z-index: 300; align-items: center; justify-content: center; padding: 48px; }
+    .lightbox.open { display: flex; }
+    .lb-inner { position: relative; max-width: 90vw; max-height: 90vh; }
+    .lb-inner img { max-width: 88vw; max-height: 78vh; object-fit: contain; }
+    .lb-caption { margin-top: 20px; text-align: center; }
+    .lb-title { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+    .lb-meta { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .lb-close { position: fixed; top: 24px; right: 28px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 28px; transition: color 0.2s; }
+    .lb-close:hover { color: var(--text); }
+    .lb-nav { position: fixed; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: 32px; padding: 16px; transition: color 0.2s; }
+    .lb-nav:hover { color: var(--text); }
+    .lb-prev { left: 12px; }
+    .lb-next { right: 12px; }
+
+    /* ── RESPONSIVE ───────────────────────────── */
+    @media (max-width: 768px) {
+      .nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+
+      .hero-logo { width: min(300px, 80vw); }
+
+      .work { padding: 64px 16px; }
+      .work-grid { grid-template-columns: repeat(2, 1fr); }
+      .work-card.featured { grid-column: span 2; }
+      .work-card.featured .work-card-img { aspect-ratio: 16/9; }
+
+      .about { grid-template-columns: 1fr; gap: 48px; padding: 64px 24px; }
+      .about-img-wrap { position: static; order: -1; }
+      .about-img { aspect-ratio: 4/3; }
+
+      .contact { padding: 64px 24px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .form-row { grid-template-columns: 1fr; }
+
+      .footer-top { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
+      .legal-accordion summary { padding: 20px 24px; }
+      .legal-body { padding: 32px 24px 48px; }
+    }
+
+    @media (max-width: 480px) {
+      .work-grid { grid-template-columns: 1fr; }
+      .work-card.featured { grid-column: span 1; }
+      .work-card.featured .work-card-img { aspect-ratio: 1/1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-logo">
+      <a href="#top">
+        <!-- Rojas signature -->
+        <svg viewBox="0 0 743 392" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1,0,0,1,-470.757523,-409.922844)"><g transform="matrix(2,0,0,2,770.4658,733.2686)"><path d="M0,-128.636C1.507,-127.816 4.078,-129.249 5.208,-131.64C5.799,-132.89 6.652,-134.363 6.454,-136.136C6.358,-137.001 5.66,-139.007 4.838,-139.905C4.156,-140.65 2.11,-141.43 1.221,-141.718C-0.208,-142.182 -3.592,-141.265 -4.535,-139.8C-5.868,-137.729 -4.493,-133.944 -3.314,-132.299C-2.258,-130.824 -1.473,-129.436 0,-128.636M48.843,-40.54C49.341,-39.036 49.623,-37.277 50.066,-35.655C51.874,-29.018 53.535,-22.108 52.856,-13.502C52.693,-11.428 52.011,-9.475 51.809,-7.57C51.656,-6.141 51.826,-4.632 51.635,-3.209C51.412,-1.56 50.82,0.223 50.588,1.849C50.306,3.828 50.133,5.504 49.541,6.733C48.783,8.309 47.225,9.227 45.879,10.92C44.546,12.596 43.604,14.488 41.691,14.584C39.258,14.703 35.212,10.923 34.539,8.304C34.043,6.367 34.696,3.203 34.713,1.152C34.729,-0.803 34.173,-2.908 34.015,-5.302C33.892,-7.192 34.365,-9.212 34.365,-11.233C34.365,-12.638 33.849,-14.143 33.841,-15.595C33.824,-18.509 34.418,-21.875 34.713,-25.014C35.353,-31.809 36.32,-36.008 38.377,-41.586C39.331,-44.172 40.111,-48.492 41.691,-49.087C44.815,-50.26 48.138,-42.677 48.843,-40.54M220.316,-96.534C218.864,-99.777 215.413,-100.815 212.815,-103.337C211.835,-104.289 211.036,-105.446 210.199,-106.477C209.276,-107.615 208.411,-108.427 207.233,-109.443C205.095,-111.285 202.782,-112.523 200.256,-114.327C196.85,-116.757 193.562,-119.48 191.01,-122.874C189.908,-124.339 188.993,-125.745 187.871,-125.665C186.033,-125.534 185.289,-121.3 184.557,-120.083C182.72,-117.031 180.056,-115.197 177.23,-113.454C170.98,-109.601 160.516,-107.114 152.461,-110.14C151.157,-110.63 149.941,-111.483 148.447,-111.885C146.718,-112.35 145.804,-111.938 144.261,-112.583C142.817,-113.185 141.158,-115.233 140.423,-116.769C139.629,-118.429 139.399,-121.901 137.632,-122.176C136.495,-122.354 135.268,-120.155 134.318,-118.863C131.114,-114.506 127.74,-111.49 125.246,-107C123.459,-103.779 121.644,-101.548 119.491,-98.802C118.273,-97.248 114.63,-90.944 112.165,-92.347C110.557,-93.263 111.96,-97.012 112.689,-98.453C113.117,-99.301 113.818,-99.992 114.607,-100.721C115.355,-101.411 116.565,-102.271 116.351,-103.337C116.072,-104.726 114.483,-104.675 113.385,-105.081C112.005,-105.592 110.31,-106.072 109.548,-106.477C107.044,-107.807 106.14,-110.242 103.791,-111.362C99.458,-113.428 91.186,-113.232 86.173,-112.234C84.179,-111.837 82.147,-111.531 80.592,-111.013C79.623,-110.689 78.612,-110.834 77.595,-110.444C76.443,-110.002 75.212,-109.011 74.137,-108.571C72.716,-107.988 71.297,-107.119 69.776,-106.477C68.193,-105.809 66.497,-105.17 65.241,-104.384C62.642,-102.757 60.872,-100.007 59.135,-96.883C57.504,-93.948 55.515,-90.967 53.902,-88.336C51.373,-84.209 48.873,-79.621 46.577,-75.253C45.572,-73.344 45.005,-71.531 43.263,-71.589C41.709,-71.642 41.163,-73.318 39.774,-75.601C38.757,-77.27 37.432,-78.829 36.634,-80.138C34.58,-83.497 32.677,-86.752 30.527,-89.382C28.084,-92.37 26.28,-95.411 24.073,-98.104C21.774,-100.907 19.748,-104.199 17.445,-106.826C16.344,-108.079 14.784,-109.327 13.258,-110.663C11.745,-111.989 10.226,-113.694 8.722,-114.327C7.762,-114.731 6.298,-114.83 4.885,-115.2C3.373,-115.594 2.12,-116.229 0.872,-116.071C-1.43,-115.78 -3.368,-113.003 -5.233,-111.536C-6.201,-110.774 -7.374,-110.201 -8.373,-109.443C-9.503,-108.584 -10.241,-107.477 -10.99,-106.651C-13.176,-104.244 -16.316,-100.751 -18.839,-98.453C-19.863,-97.52 -21.22,-96.478 -22.327,-96.534C-24.605,-96.649 -25.463,-100.124 -28.084,-100.895C-29.298,-101.252 -30.696,-101.246 -32.097,-101.069C-36.568,-100.504 -40.982,-96.702 -42.214,-92.696C-42.929,-90.374 -42.148,-88.678 -42.214,-86.242C-44.253,-86.749 -45.435,-87.729 -46.575,-89.033C-47.766,-90.395 -48.491,-92.195 -50.413,-92.522C-53.81,-93.1 -56.796,-90.524 -59.482,-89.731C-61.107,-89.252 -62.99,-89.265 -64.716,-88.859C-66.506,-88.439 -67.801,-87.416 -69.252,-87.288C-71.29,-87.109 -73.227,-87.938 -75.183,-88.511C-76.964,-89.031 -78.816,-89.48 -80.765,-90.08C-83.468,-90.912 -89.113,-92.905 -90.01,-95.313C-90.814,-97.472 -88.96,-101.585 -88.265,-104.034C-85.89,-112.413 -85.113,-121.558 -86.347,-132.12C-87.412,-141.229 -90.223,-149.246 -94.72,-154.796C-97.586,-158.334 -102.435,-162.775 -109.372,-161.425C-112.293,-160.858 -116.344,-160.01 -119.141,-158.808C-120.689,-158.145 -121.635,-157.304 -122.979,-156.367C-124.194,-155.518 -125.542,-154.816 -126.641,-153.924C-128.87,-152.12 -130.67,-149.826 -132.573,-147.644C-136.498,-143.145 -139.135,-137.987 -141.644,-132.295C-142.855,-129.545 -143.683,-126.444 -144.609,-123.223C-145.493,-120.15 -146.89,-117.138 -147.575,-113.978C-148.304,-110.615 -148.675,-106.9 -149.145,-103.337C-150.124,-95.885 -149.867,-88.19 -149.668,-80.312C-149.57,-76.488 -149.124,-72.652 -148.971,-68.799C-148.814,-64.877 -149.014,-60.981 -148.621,-57.111C-148.238,-53.331 -148.284,-49.476 -148.447,-45.772C-148.778,-38.233 -149.053,-29.989 -148.272,-22.747C-147.93,-19.567 -146.858,-16.032 -146.179,-12.804C-145.389,-9.051 -145.396,-4.885 -144.26,-2.513C-143.385,-0.686 -140.722,2.011 -138.678,2.023C-136.355,2.038 -133.861,-0.458 -132.922,-2.513C-132.357,-3.747 -132.18,-5.38 -131.875,-7.222C-131.594,-8.921 -131.177,-10.665 -131.177,-12.281C-131.177,-14.543 -131.778,-16.946 -132.05,-18.734C-132.241,-20.004 -132.149,-21.281 -132.225,-22.573C-132.671,-30.186 -134.189,-36.712 -135.713,-43.505C-136.195,-45.657 -137.034,-47.636 -137.457,-49.785C-137.918,-52.128 -138.27,-54.395 -138.503,-56.937C-138.74,-59.517 -138.532,-62.179 -138.678,-64.962C-138.807,-67.4 -139.296,-69.924 -139.375,-72.462C-139.542,-77.763 -139.109,-83.02 -138.853,-88.161C-138.603,-93.192 -138.033,-98.15 -137.457,-102.988C-136.546,-110.642 -136.628,-118.258 -134.492,-124.444C-133.778,-126.514 -133.288,-128.813 -132.398,-130.549C-131.401,-132.499 -129.36,-134.117 -127.863,-136.132C-126.497,-137.972 -125.134,-139.813 -123.502,-141.539C-121.941,-143.191 -120.183,-144.996 -118.269,-146.074C-117.278,-146.632 -116.175,-147.114 -115.128,-147.819C-113.936,-148.624 -112.884,-149.274 -111.814,-149.389C-107.133,-149.892 -105.649,-147.256 -103.791,-144.854C-100.321,-140.368 -96.799,-136.38 -96.289,-129.503C-95.939,-124.767 -95.749,-119.703 -96.289,-115.024C-96.539,-112.872 -97.162,-110.718 -97.51,-108.571C-97.87,-106.361 -97.843,-103.788 -98.383,-101.767C-98.79,-100.245 -99.59,-98.488 -100.301,-96.36C-100.711,-95.135 -102.507,-92.109 -101.872,-90.777C-101.198,-89.368 -98.272,-89.817 -96.988,-89.382C-95.669,-88.936 -94.581,-87.797 -93.324,-86.94C-89.401,-84.264 -85.616,-82.795 -80.241,-81.708C-77.043,-81.059 -73.717,-80.198 -70.298,-79.44C-66.81,-78.666 -63.619,-77.295 -59.833,-77.52C-58.918,-77.575 -57.836,-77.798 -57.041,-78.044C-54.484,-78.834 -53.464,-81.267 -50.587,-81.533C-49.276,-81.653 -48,-81.195 -46.575,-80.835C-45.222,-80.493 -43.816,-80.251 -42.562,-79.962C-39.872,-79.343 -37.46,-78.026 -35.411,-77.52C-33.364,-77.015 -29.132,-76.452 -27.038,-76.997C-25.745,-77.334 -24.088,-79.235 -23.2,-80.66C-22.444,-81.874 -22.372,-83.747 -21.805,-85.196C-21.327,-86.416 -20.651,-87.887 -19.885,-88.685C-18.587,-90.038 -16.109,-90.52 -14.304,-91.649C-13.028,-92.449 -11.744,-94.184 -10.118,-95.662C-6.856,-98.624 -4.713,-100.791 -1.046,-103.163C1.057,-104.523 2.712,-105.802 4.711,-105.78C6.894,-105.753 9.29,-104.005 10.99,-102.814C12.97,-101.425 14.633,-99.884 15.699,-98.278C16.399,-97.226 17.209,-95.176 17.793,-94.266C19.348,-91.845 21.98,-90.202 23.898,-87.812C25.734,-85.523 27.209,-82.772 28.956,-80.312C30.816,-77.691 32.391,-75.404 33.667,-72.462C34.935,-69.536 35.784,-66.365 37.155,-63.391C37.878,-61.823 39.394,-60.371 39.598,-58.506C39.88,-55.921 38.007,-52.548 37.155,-49.61C36.207,-46.326 35.242,-43.496 34.365,-40.888C32.457,-35.217 30.767,-29.285 29.306,-22.922C28.617,-19.921 27.189,-16.973 27.038,-13.675C26.711,-6.537 25.428,0.375 25.468,7.78C25.477,9.492 25.801,11.39 25.817,13.188C25.835,15.086 25.298,16.913 25.468,18.595C25.717,21.044 27.056,22.641 28.259,24.352C30.109,26.981 32.239,29.067 34.365,31.503C35.353,32.636 36.815,34.139 38.377,34.12C40.877,34.089 42.017,31.349 44.134,30.108C45.094,29.545 46.761,29.274 47.449,28.712C48.498,27.854 49.436,25.524 50.413,23.828C51.444,22.037 52.13,20.009 52.856,18.246C54.506,14.232 56.58,11.541 58.263,7.605C60.688,1.933 62.13,-4.536 62.449,-12.107C62.564,-14.811 63.157,-17.628 62.973,-19.607C62.812,-21.345 61.226,-22.804 60.879,-24.316C60.545,-25.781 60.728,-27.411 60.531,-28.852C60.334,-30.294 60.073,-31.696 59.833,-33.039C59.344,-35.768 58.937,-38.546 58.263,-41.238C57.832,-42.957 56.968,-44.685 56.344,-46.471C55.691,-48.339 55.321,-50.384 54.6,-52.052C53.833,-53.829 52.384,-55.793 51.112,-57.809C49.946,-59.653 47.97,-62.029 47.797,-63.914C47.479,-67.384 50.562,-71.692 52.682,-74.73C53.772,-76.291 55.028,-77.681 56.17,-79.091C57.358,-80.557 58.714,-81.843 59.833,-83.277C61.005,-84.779 62.037,-86.932 63.672,-88.685C65.312,-90.444 67.41,-91.709 68.73,-93.045C70.034,-94.367 70.768,-95.981 72.393,-97.406C73.781,-98.624 75.912,-99.678 77.625,-101.069C81.427,-104.157 84.9,-107.745 92.976,-107C94.896,-106.823 96.15,-106.673 97.715,-106.509C99.361,-106.337 100.13,-105.738 102.047,-105.081C104.155,-104.361 104.156,-101.602 103.618,-98.976C103.052,-96.225 101.541,-94.649 101.349,-92.696C101.685,-87.406 103.491,-80.272 107.629,-79.787C109.607,-79.557 112.012,-80.94 113.385,-81.881C115.348,-83.223 117.265,-85.779 119.141,-87.288C120.781,-88.607 121.486,-89.656 122.63,-91.301C123.149,-92.045 123.764,-92.722 124.376,-93.394C125.678,-94.826 127.428,-95.736 128.387,-96.883C128.977,-97.59 129.304,-98.593 129.957,-99.5C130.531,-100.296 131.403,-100.957 132.052,-101.767C133.47,-103.541 134.204,-105.463 136.411,-105.954C137.804,-106.263 139.915,-105.533 142.169,-105.081C144.536,-104.608 147.106,-104.825 149.146,-104.558C150.417,-104.392 151.756,-103.88 152.982,-103.86C154.408,-103.838 155.617,-104.219 157.169,-104.384C158.465,-104.521 159.812,-104.607 161.182,-104.733C166.459,-105.218 171.13,-106.102 175.66,-107.35C178.165,-108.039 180.694,-108.374 182.637,-109.094C185.049,-109.985 186.597,-112.155 189.614,-111.885C191.594,-111.708 192.421,-110.331 194.498,-109.094C196.234,-108.062 198.092,-107.368 199.383,-106.477C202.636,-104.235 206.926,-99.674 208.28,-96.186C208.929,-94.513 209.783,-90.564 209.675,-88.685C209.552,-86.542 208.185,-84.283 207.058,-82.754C206.066,-81.405 204.836,-79.882 202.698,-79.44C201.321,-79.154 199.97,-79.455 198.859,-79.787C197.711,-80.131 196.67,-80.627 195.545,-81.183C194.727,-81.589 193.479,-82.747 192.057,-81.881C191.878,-79.491 193.916,-79.035 195.197,-77.87C196.582,-76.607 197.571,-75.044 199.209,-74.206C200.466,-73.562 202.264,-73.061 203.918,-72.811C210.931,-71.75 213.091,-75.501 215.956,-79.091C217.614,-81.168 219.615,-83.735 220.491,-86.068C221.551,-88.894 221.588,-93.692 220.316,-96.534" fill="white"/></g></g></svg>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle"><i class="ph ph-list"></i></button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose"><i class="ph ph-x"></i></button>
+    <a href="#work" onclick="closeMM()">Work</a>
+    <a href="#about" onclick="closeMM()">About</a>
+    <a href="#contact" onclick="closeMM()">Contact</a>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="top">
+    <div class="hero-logo">
+      <svg viewBox="0 0 743 392" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1,0,0,1,-470.757523,-409.922844)"><g transform="matrix(2,0,0,2,770.4658,733.2686)"><path d="M0,-128.636C1.507,-127.816 4.078,-129.249 5.208,-131.64C5.799,-132.89 6.652,-134.363 6.454,-136.136C6.358,-137.001 5.66,-139.007 4.838,-139.905C4.156,-140.65 2.11,-141.43 1.221,-141.718C-0.208,-142.182 -3.592,-141.265 -4.535,-139.8C-5.868,-137.729 -4.493,-133.944 -3.314,-132.299C-2.258,-130.824 -1.473,-129.436 0,-128.636M48.843,-40.54C49.341,-39.036 49.623,-37.277 50.066,-35.655C51.874,-29.018 53.535,-22.108 52.856,-13.502C52.693,-11.428 52.011,-9.475 51.809,-7.57C51.656,-6.141 51.826,-4.632 51.635,-3.209C51.412,-1.56 50.82,0.223 50.588,1.849C50.306,3.828 50.133,5.504 49.541,6.733C48.783,8.309 47.225,9.227 45.879,10.92C44.546,12.596 43.604,14.488 41.691,14.584C39.258,14.703 35.212,10.923 34.539,8.304C34.043,6.367 34.696,3.203 34.713,1.152C34.729,-0.803 34.173,-2.908 34.015,-5.302C33.892,-7.192 34.365,-9.212 34.365,-11.233C34.365,-12.638 33.849,-14.143 33.841,-15.595C33.824,-18.509 34.418,-21.875 34.713,-25.014C35.353,-31.809 36.32,-36.008 38.377,-41.586C39.331,-44.172 40.111,-48.492 41.691,-49.087C44.815,-50.26 48.138,-42.677 48.843,-40.54M220.316,-96.534C218.864,-99.777 215.413,-100.815 212.815,-103.337C211.835,-104.289 211.036,-105.446 210.199,-106.477C209.276,-107.615 208.411,-108.427 207.233,-109.443C205.095,-111.285 202.782,-112.523 200.256,-114.327C196.85,-116.757 193.562,-119.48 191.01,-122.874C189.908,-124.339 188.993,-125.745 187.871,-125.665C186.033,-125.534 185.289,-121.3 184.557,-120.083C182.72,-117.031 180.056,-115.197 177.23,-113.454C170.98,-109.601 160.516,-107.114 152.461,-110.14C151.157,-110.63 149.941,-111.483 148.447,-111.885C146.718,-112.35 145.804,-111.938 144.261,-112.583C142.817,-113.185 141.158,-115.233 140.423,-116.769C139.629,-118.429 139.399,-121.901 137.632,-122.176C136.495,-122.354 135.268,-120.155 134.318,-118.863C131.114,-114.506 127.74,-111.49 125.246,-107C123.459,-103.779 121.644,-101.548 119.491,-98.802C118.273,-97.248 114.63,-90.944 112.165,-92.347C110.557,-93.263 111.96,-97.012 112.689,-98.453C113.117,-99.301 113.818,-99.992 114.607,-100.721C115.355,-101.411 116.565,-102.271 116.351,-103.337C116.072,-104.726 114.483,-104.675 113.385,-105.081C112.005,-105.592 110.31,-106.072 109.548,-106.477C107.044,-107.807 106.14,-110.242 103.791,-111.362C99.458,-113.428 91.186,-113.232 86.173,-112.234C84.179,-111.837 82.147,-111.531 80.592,-111.013C79.623,-110.689 78.612,-110.834 77.595,-110.444C76.443,-110.002 75.212,-109.011 74.137,-108.571C72.716,-107.988 71.297,-107.119 69.776,-106.477C68.193,-105.809 66.497,-105.17 65.241,-104.384C62.642,-102.757 60.872,-100.007 59.135,-96.883C57.504,-93.948 55.515,-90.967 53.902,-88.336C51.373,-84.209 48.873,-79.621 46.577,-75.253C45.572,-73.344 45.005,-71.531 43.263,-71.589C41.709,-71.642 41.163,-73.318 39.774,-75.601C38.757,-77.27 37.432,-78.829 36.634,-80.138C34.58,-83.497 32.677,-86.752 30.527,-89.382C28.084,-92.37 26.28,-95.411 24.073,-98.104C21.774,-100.907 19.748,-104.199 17.445,-106.826C16.344,-108.079 14.784,-109.327 13.258,-110.663C11.745,-111.989 10.226,-113.694 8.722,-114.327C7.762,-114.731 6.298,-114.83 4.885,-115.2C3.373,-115.594 2.12,-116.229 0.872,-116.071C-1.43,-115.78 -3.368,-113.003 -5.233,-111.536C-6.201,-110.774 -7.374,-110.201 -8.373,-109.443C-9.503,-108.584 -10.241,-107.477 -10.99,-106.651C-13.176,-104.244 -16.316,-100.751 -18.839,-98.453C-19.863,-97.52 -21.22,-96.478 -22.327,-96.534C-24.605,-96.649 -25.463,-100.124 -28.084,-100.895C-29.298,-101.252 -30.696,-101.246 -32.097,-101.069C-36.568,-100.504 -40.982,-96.702 -42.214,-92.696C-42.929,-90.374 -42.148,-88.678 -42.214,-86.242C-44.253,-86.749 -45.435,-87.729 -46.575,-89.033C-47.766,-90.395 -48.491,-92.195 -50.413,-92.522C-53.81,-93.1 -56.796,-90.524 -59.482,-89.731C-61.107,-89.252 -62.99,-89.265 -64.716,-88.859C-66.506,-88.439 -67.801,-87.416 -69.252,-87.288C-71.29,-87.109 -73.227,-87.938 -75.183,-88.511C-76.964,-89.031 -78.816,-89.48 -80.765,-90.08C-83.468,-90.912 -89.113,-92.905 -90.01,-95.313C-90.814,-97.472 -88.96,-101.585 -88.265,-104.034C-85.89,-112.413 -85.113,-121.558 -86.347,-132.12C-87.412,-141.229 -90.223,-149.246 -94.72,-154.796C-97.586,-158.334 -102.435,-162.775 -109.372,-161.425C-112.293,-160.858 -116.344,-160.01 -119.141,-158.808C-120.689,-158.145 -121.635,-157.304 -122.979,-156.367C-124.194,-155.518 -125.542,-154.816 -126.641,-153.924C-128.87,-152.12 -130.67,-149.826 -132.573,-147.644C-136.498,-143.145 -139.135,-137.987 -141.644,-132.295C-142.855,-129.545 -143.683,-126.444 -144.609,-123.223C-145.493,-120.15 -146.89,-117.138 -147.575,-113.978C-148.304,-110.615 -148.675,-106.9 -149.145,-103.337C-150.124,-95.885 -149.867,-88.19 -149.668,-80.312C-149.57,-76.488 -149.124,-72.652 -148.971,-68.799C-148.814,-64.877 -149.014,-60.981 -148.621,-57.111C-148.238,-53.331 -148.284,-49.476 -148.447,-45.772C-148.778,-38.233 -149.053,-29.989 -148.272,-22.747C-147.93,-19.567 -146.858,-16.032 -146.179,-12.804C-145.389,-9.051 -145.396,-4.885 -144.26,-2.513C-143.385,-0.686 -140.722,2.011 -138.678,2.023C-136.355,2.038 -133.861,-0.458 -132.922,-2.513C-132.357,-3.747 -132.18,-5.38 -131.875,-7.222C-131.594,-8.921 -131.177,-10.665 -131.177,-12.281C-131.177,-14.543 -131.778,-16.946 -132.05,-18.734C-132.241,-20.004 -132.149,-21.281 -132.225,-22.573C-132.671,-30.186 -134.189,-36.712 -135.713,-43.505C-136.195,-45.657 -137.034,-47.636 -137.457,-49.785C-137.918,-52.128 -138.27,-54.395 -138.503,-56.937C-138.74,-59.517 -138.532,-62.179 -138.678,-64.962C-138.807,-67.4 -139.296,-69.924 -139.375,-72.462C-139.542,-77.763 -139.109,-83.02 -138.853,-88.161C-138.603,-93.192 -138.033,-98.15 -137.457,-102.988C-136.546,-110.642 -136.628,-118.258 -134.492,-124.444C-133.778,-126.514 -133.288,-128.813 -132.398,-130.549C-131.401,-132.499 -129.36,-134.117 -127.863,-136.132C-126.497,-137.972 -125.134,-139.813 -123.502,-141.539C-121.941,-143.191 -120.183,-144.996 -118.269,-146.074C-117.278,-146.632 -116.175,-147.114 -115.128,-147.819C-113.936,-148.624 -112.884,-149.274 -111.814,-149.389C-107.133,-149.892 -105.649,-147.256 -103.791,-144.854C-100.321,-140.368 -96.799,-136.38 -96.289,-129.503C-95.939,-124.767 -95.749,-119.703 -96.289,-115.024C-96.539,-112.872 -97.162,-110.718 -97.51,-108.571C-97.87,-106.361 -97.843,-103.788 -98.383,-101.767C-98.79,-100.245 -99.59,-98.488 -100.301,-96.36C-100.711,-95.135 -102.507,-92.109 -101.872,-90.777C-101.198,-89.368 -98.272,-89.817 -96.988,-89.382C-95.669,-88.936 -94.581,-87.797 -93.324,-86.94C-89.401,-84.264 -85.616,-82.795 -80.241,-81.708C-77.043,-81.059 -73.717,-80.198 -70.298,-79.44C-66.81,-78.666 -63.619,-77.295 -59.833,-77.52C-58.918,-77.575 -57.836,-77.798 -57.041,-78.044C-54.484,-78.834 -53.464,-81.267 -50.587,-81.533C-49.276,-81.653 -48,-81.195 -46.575,-80.835C-45.222,-80.493 -43.816,-80.251 -42.562,-79.962C-39.872,-79.343 -37.46,-78.026 -35.411,-77.52C-33.364,-77.015 -29.132,-76.452 -27.038,-76.997C-25.745,-77.334 -24.088,-79.235 -23.2,-80.66C-22.444,-81.874 -22.372,-83.747 -21.805,-85.196C-21.327,-86.416 -20.651,-87.887 -19.885,-88.685C-18.587,-90.038 -16.109,-90.52 -14.304,-91.649C-13.028,-92.449 -11.744,-94.184 -10.118,-95.662C-6.856,-98.624 -4.713,-100.791 -1.046,-103.163C1.057,-104.523 2.712,-105.802 4.711,-105.78C6.894,-105.753 9.29,-104.005 10.99,-102.814C12.97,-101.425 14.633,-99.884 15.699,-98.278C16.399,-97.226 17.209,-95.176 17.793,-94.266C19.348,-91.845 21.98,-90.202 23.898,-87.812C25.734,-85.523 27.209,-82.772 28.956,-80.312C30.816,-77.691 32.391,-75.404 33.667,-72.462C34.935,-69.536 35.784,-66.365 37.155,-63.391C37.878,-61.823 39.394,-60.371 39.598,-58.506C39.88,-55.921 38.007,-52.548 37.155,-49.61C36.207,-46.326 35.242,-43.496 34.365,-40.888C32.457,-35.217 30.767,-29.285 29.306,-22.922C28.617,-19.921 27.189,-16.973 27.038,-13.675C26.711,-6.537 25.428,0.375 25.468,7.78C25.477,9.492 25.801,11.39 25.817,13.188C25.835,15.086 25.298,16.913 25.468,18.595C25.717,21.044 27.056,22.641 28.259,24.352C30.109,26.981 32.239,29.067 34.365,31.503C35.353,32.636 36.815,34.139 38.377,34.12C40.877,34.089 42.017,31.349 44.134,30.108C45.094,29.545 46.761,29.274 47.449,28.712C48.498,27.854 49.436,25.524 50.413,23.828C51.444,22.037 52.13,20.009 52.856,18.246C54.506,14.232 56.58,11.541 58.263,7.605C60.688,1.933 62.13,-4.536 62.449,-12.107C62.564,-14.811 63.157,-17.628 62.973,-19.607C62.812,-21.345 61.226,-22.804 60.879,-24.316C60.545,-25.781 60.728,-27.411 60.531,-28.852C60.334,-30.294 60.073,-31.696 59.833,-33.039C59.344,-35.768 58.937,-38.546 58.263,-41.238C57.832,-42.957 56.968,-44.685 56.344,-46.471C55.691,-48.339 55.321,-50.384 54.6,-52.052C53.833,-53.829 52.384,-55.793 51.112,-57.809C49.946,-59.653 47.97,-62.029 47.797,-63.914C47.479,-67.384 50.562,-71.692 52.682,-74.73C53.772,-76.291 55.028,-77.681 56.17,-79.091C57.358,-80.557 58.714,-81.843 59.833,-83.277C61.005,-84.779 62.037,-86.932 63.672,-88.685C65.312,-90.444 67.41,-91.709 68.73,-93.045C70.034,-94.367 70.768,-95.981 72.393,-97.406C73.781,-98.624 75.912,-99.678 77.625,-101.069C81.427,-104.157 84.9,-107.745 92.976,-107C94.896,-106.823 96.15,-106.673 97.715,-106.509C99.361,-106.337 100.13,-105.738 102.047,-105.081C104.155,-104.361 104.156,-101.602 103.618,-98.976C103.052,-96.225 101.541,-94.649 101.349,-92.696C101.685,-87.406 103.491,-80.272 107.629,-79.787C109.607,-79.557 112.012,-80.94 113.385,-81.881C115.348,-83.223 117.265,-85.779 119.141,-87.288C120.781,-88.607 121.486,-89.656 122.63,-91.301C123.149,-92.045 123.764,-92.722 124.376,-93.394C125.678,-94.826 127.428,-95.736 128.387,-96.883C128.977,-97.59 129.304,-98.593 129.957,-99.5C130.531,-100.296 131.403,-100.957 132.052,-101.767C133.47,-103.541 134.204,-105.463 136.411,-105.954C137.804,-106.263 139.915,-105.533 142.169,-105.081C144.536,-104.608 147.106,-104.825 149.146,-104.558C150.417,-104.392 151.756,-103.88 152.982,-103.86C154.408,-103.838 155.617,-104.219 157.169,-104.384C158.465,-104.521 159.812,-104.607 161.182,-104.733C166.459,-105.218 171.13,-106.102 175.66,-107.35C178.165,-108.039 180.694,-108.374 182.637,-109.094C185.049,-109.985 186.597,-112.155 189.614,-111.885C191.594,-111.708 192.421,-110.331 194.498,-109.094C196.234,-108.062 198.092,-107.368 199.383,-106.477C202.636,-104.235 206.926,-99.674 208.28,-96.186C208.929,-94.513 209.783,-90.564 209.675,-88.685C209.552,-86.542 208.185,-84.283 207.058,-82.754C206.066,-81.405 204.836,-79.882 202.698,-79.44C201.321,-79.154 199.97,-79.455 198.859,-79.787C197.711,-80.131 196.67,-80.627 195.545,-81.183C194.727,-81.589 193.479,-82.747 192.057,-81.881C191.878,-79.491 193.916,-79.035 195.197,-77.87C196.582,-76.607 197.571,-75.044 199.209,-74.206C200.466,-73.562 202.264,-73.061 203.918,-72.811C210.931,-71.75 213.091,-75.501 215.956,-79.091C217.614,-81.168 219.615,-83.735 220.491,-86.068C221.551,-88.894 221.588,-93.692 220.316,-96.534" fill="white"/></g></g></svg>
+    </div>
+    <p class="hero-sub">Artist &nbsp;·&nbsp; Ratingen, Germany</p>
+    <div class="hero-scroll"><i class="ph ph-arrow-down"></i></div>
+  </section>
+
+  <!-- ── WORK ── -->
+  <section class="work" id="work">
+    <div class="section-header">
+      <span class="section-label">Work</span>
+    </div>
+    <div class="work-grid" id="workGrid">
+
+      <div class="work-card featured" data-src="Assets/RojasMardones-Art-Mandala-01-hires.jpg" data-title="Mandala" data-meta='Sánscrito: "Círculo"'>
+        <div class="work-card-img"><img src="Assets/RojasMardones-Art-Mandala-01-hires.jpg" alt="Mandala" loading="lazy"></div>
+        <div class="work-card-caption">
+          <div class="work-card-text"><p class="work-card-title">Mandala</p><p class="work-card-meta">Sánscrito: "Círculo"</p></div>
+          <a class="gumroad-button btn-buy" href="https://rodrigorojas.gumroad.com/l/mandala-i" target="_blank">Digital print <i class="ph ph-arrow-up-right"></i></a>
+        </div>
+      </div>
+
+      <div class="work-card" data-src="Assets/RojasMardones-Art-Ancestor-01.png" data-title="Ancestor" data-meta="Acryl on canvas · 2010">
+        <div class="work-card-img"><img src="Assets/RojasMardones-Art-Ancestor-01.png" alt="Ancestor" loading="lazy"></div>
+        <div class="work-card-caption">
+          <div class="work-card-text"><p class="work-card-title">Ancestor</p><p class="work-card-meta">Acryl on canvas · 2010</p></div>
+        </div>
+      </div>
+
+      <div class="work-card" data-src="Assets/RojasMardones-Art-Gemini-01.png" data-title="Gemini" data-meta="Larch wood · 2024">
+        <div class="work-card-img"><img src="Assets/RojasMardones-Art-Gemini-01.png" alt="Gemini" loading="lazy"></div>
+        <div class="work-card-caption">
+          <div class="work-card-text"><p class="work-card-title">Gemini</p><p class="work-card-meta">Larch wood · 2024</p></div>
+        </div>
+      </div>
+
+      <div class="work-card" data-src="Assets/RojasMardones-Art-Camino-01.png" data-title="Camino" data-meta="Mixed media · 2025">
+        <div class="work-card-img"><img src="Assets/RojasMardones-Art-Camino-01.png" alt="Camino" loading="lazy"></div>
+        <div class="work-card-caption">
+          <div class="work-card-text"><p class="work-card-title">Camino</p><p class="work-card-meta">Mixed media · 2025</p></div>
+        </div>
+      </div>
+
+      <div class="work-card" data-src="Assets/RojasMardones-Art-Pluto-in-Aquarius.png" data-title="Pluto in Aquarius" data-meta="Digital · 2024">
+        <div class="work-card-img"><img src="Assets/RojasMardones-Art-Pluto-in-Aquarius.png" alt="Pluto in Aquarius" loading="lazy"></div>
+        <div class="work-card-caption">
+          <div class="work-card-text"><p class="work-card-title">Pluto in Aquarius</p><p class="work-card-meta">Digital · 2024</p></div>
+          <a class="gumroad-button btn-buy" href="https://rodrigorojas.gumroad.com/l/pluto-in-aquarius" target="_blank">Digital print <i class="ph ph-arrow-up-right"></i></a>
+        </div>
+      </div>
+
+      <div class="work-card" data-src="Assets/RojasMardones-Art-StellarPortrait-01.png" data-title="Stellar Portrait" data-meta="Digital · 2026">
+        <div class="work-card-img"><img src="Assets/RojasMardones-Art-StellarPortrait-01.png" alt="Stellar Portrait" loading="lazy"></div>
+        <div class="work-card-caption">
+          <div class="work-card-text"><p class="work-card-title">Stellar Portrait</p><p class="work-card-meta">Digital · 2026</p></div>
+          <a class="gumroad-button btn-buy" href="https://rodrigorojas.gumroad.com/l/stellar-portrait" target="_blank">Digital print <i class="ph ph-arrow-up-right"></i></a>
+        </div>
+      </div>
+
+      <div class="work-card" data-src="Assets/RojasMardones-Art-StillLife-01.png" data-title="Still Life" data-meta="Acryl on canvas · 2026">
+        <div class="work-card-img"><img src="Assets/RojasMardones-Art-StillLife-01.png" alt="Still Life" loading="lazy"></div>
+        <div class="work-card-caption">
+          <div class="work-card-text"><p class="work-card-title">Still Life</p><p class="work-card-meta">Acryl on canvas · 2026</p></div>
+        </div>
+      </div>
+
+      <div class="work-card" data-src="Assets/RojasMardones-Art-CreativeLandscapes-01.png" data-title="Creative Landscapes" data-meta="Driftwood · 2025">
+        <div class="work-card-img"><img src="Assets/RojasMardones-Art-CreativeLandscapes-01.png" alt="Creative Landscapes" loading="lazy"></div>
+        <div class="work-card-caption">
+          <div class="work-card-text"><p class="work-card-title">Creative Landscapes</p><p class="work-card-meta">Driftwood · 2025</p></div>
+        </div>
+      </div>
+
+      <!-- More works added here as inventory grows -->
+
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section class="about" id="about">
+    <div class="about-content">
+      <h2>About</h2>
+      <p class="about-bio">Rodrigo Antonio Rojas Mardones (Chile, 1976) is a multidisciplinary artist based in Ratingen-Homberg, Germany. With a background in Design and formal studies in graphic printing systems and acrylic painting, he has integrated creative practice with a parallel career in Quality Assurance since 2015.</p>
+      <p class="about-bio">Since 2018, he has been deeply involved in the study of Astrology, adding a symbolic and cosmological dimension to his work. His practice spans painting, sculpture, woodwork, and digital media.</p>
+      <div class="about-exh">
+        <h3>Exhibitions</h3>
+        <ul>
+          <li>PAVI I — Palabras Visuales, Providencia, Chile</li>
+          <li>PAVI II — Chapel Art Show 2004, São Paulo, Brazil</li>
+          <li>Group shows — Ratingen, Germany, 2025</li>
+        </ul>
+      </div>
+    </div>
+    <div class="about-img-wrap">
+      <div class="about-img"><img src="Assets/RojasMardones-Artist.png" alt="Rodrigo Rojas Mardones" loading="lazy"></div>
+      <p class="about-img-caption">Rodrigo Rojas Mardones · Ratingen, 2025</p>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section class="contact" id="contact">
+    <h2 class="contact-headline">Let's talk<br>about your idea.</h2>
+    <div class="contact-grid">
+
+      <!-- Direct contact -->
+      <div class="contact-items">
+        <a href="mailto:hello@rojasmardones.com" class="contact-item">
+          <div class="contact-item-icon"><i class="ph ph-envelope-simple"></i></div>
+          <div><p class="contact-item-type">Email</p><p class="contact-item-value">hello@rojasmardones.com</p></div>
+        </a>
+        <a href="tel:+4917682455964" class="contact-item">
+          <div class="contact-item-icon"><i class="ph ph-phone"></i></div>
+          <div><p class="contact-item-type">Phone / WhatsApp</p><p class="contact-item-value">+49 176 8245 5964</p></div>
+        </a>
+        <a href="https://instagram.com/TBD" target="_blank" class="contact-item">
+          <div class="contact-item-icon"><i class="ph ph-instagram-logo"></i></div>
+          <div><p class="contact-item-type">Instagram</p><p class="contact-item-value">@rojas — to be added</p></div>
+        </a>
+      </div>
+
+      <!-- Form -->
+      <!-- Use Formspree: replace action URL with https://formspree.io/f/[your-id] — no PHP required -->
+      <form class="contact-form" action="https://formspree.io/f/REPLACE-WITH-ID" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="your@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea name="message" placeholder="Commission, print inquiry, collaboration…" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Send <i class="ph ph-arrow-right"></i></button>
+        <p class="form-note">Used only to respond to your message.</p>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-top">
+      <span class="footer-copy">© 2026 Rodrigo Rojas Mardones</span>
+      <ul class="footer-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://astrologyfoundme.com" target="_blank">Astrology Found Me <i class="ph ph-arrow-up-right" style="font-size:10px;"></i></a></li>
+      </ul>
+    </div>
+
+    <!-- Legal accordion — pure HTML <details>, zero JS -->
+    <details class="legal-accordion">
+      <summary>Legal Notice / Imprint</summary>
+      <div class="legal-body">
+
+        <div class="legal-block">
+          <h3>Provider</h3>
+          <address>
+            Rodrigo Antonio Rojas Mardones<br>
+            Artist — Sole Proprietorship / Small Business<br>
+            Dorfstraße 32, 40883 Ratingen-Homberg, Germany
+          </address>
+          <p>Phone: <a href="tel:+4917682455964">+49 176 8245 5964</a> · Email: <a href="mailto:hello@rojasmardones.com">hello@rojasmardones.com</a><br>
+          VAT ID: In process — application pending.</p>
+          <p>Information pursuant to § 5 Digital Services Act (DDG).</p>
+        </div>
+
+        <div class="legal-block">
+          <h3>Privacy policy</h3>
+          <p>Personal data is collected and processed only to the extent necessary to respond to inquiries and process orders. Data is not passed on to third parties except where required by law or necessary to fulfill a contract. Data processing complies with EU GDPR. You have the right to request information, correction, or deletion of stored data.</p>
+        </div>
+
+        <div class="legal-block">
+          <h3>Right of withdrawal</h3>
+          <p>Consumers have the right to withdraw from a purchase within 14 days without giving reason, unless legal exceptions apply (e.g. custom or personalized works). To withdraw, contact <a href="mailto:hello@rojasmardones.com">hello@rojasmardones.com</a>. Payments are refunded after returned goods are received and checked.</p>
+        </div>
+
+        <div class="legal-block">
+          <h3>Payment and shipping</h3>
+          <p>Payment methods are specified during checkout. Orders are processed after full payment. Shipping costs and delivery times depend on destination and are communicated during the ordering process. Customs duties outside Germany are borne by the customer.</p>
+        </div>
+
+        <div class="legal-block">
+          <h3>Copyrights</h3>
+          <p>All content on this website — texts, images, artworks, trademarks — is protected by German and international copyright law. Reproduction or use requires prior written permission from Rodrigo Antonio Rojas Mardones. Licensing: <a href="mailto:hello@rojasmardones.com">hello@rojasmardones.com</a>.</p>
+        </div>
+
+      </div>
+    </details>
+  </footer>
+
+  <!-- ── LIGHTBOX ── -->
+  <div class="lightbox" id="lb">
+    <button class="lb-close" id="lbClose"><i class="ph ph-x"></i></button>
+    <button class="lb-nav lb-prev" id="lbPrev"><i class="ph ph-caret-left"></i></button>
+    <button class="lb-nav lb-next" id="lbNext"><i class="ph ph-caret-right"></i></button>
+    <div class="lb-inner">
+      <img src="" alt="" id="lbImg">
+      <div class="lb-caption">
+        <p class="lb-title" id="lbTitle"></p>
+        <p class="lb-meta" id="lbMeta"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+
+    // Mobile menu
+    document.getElementById('navToggle').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+    document.getElementById('menuClose').addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+    function closeMM() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+    // Lightbox — triggered only by clicking the image, not the caption/button
+    const cards = document.querySelectorAll('.work-card');
+    const lb = document.getElementById('lb');
+    const lbImg = document.getElementById('lbImg');
+    const lbTitle = document.getElementById('lbTitle');
+    const lbMeta = document.getElementById('lbMeta');
+    let cur = 0;
+    const data = Array.from(cards).map(c => ({ src: c.dataset.src, title: c.dataset.title, meta: c.dataset.meta }));
+
+    function open(i) {
+      cur = i; const d = data[i];
+      lbImg.src = d.src; lbImg.alt = d.title;
+      lbTitle.textContent = d.title; lbMeta.innerHTML = d.meta;
+      lb.classList.add('open'); document.body.style.overflow = 'hidden';
+    }
+    function close() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+
+    cards.forEach((c, i) => c.querySelector('.work-card-img').addEventListener('click', () => open(i)));
+    document.getElementById('lbClose').addEventListener('click', close);
+    document.getElementById('lbPrev').addEventListener('click', () => open((cur - 1 + data.length) % data.length));
+    document.getElementById('lbNext').addEventListener('click', () => open((cur + 1) % data.length));
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') open((cur - 1 + data.length) % data.length);
+      if (e.key === 'ArrowRight') open((cur + 1) % data.length);
+    });
+  </script>
+</body>
+</html>
