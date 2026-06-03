@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rojasmardones.com — Estado del proyecto · Junio 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a; --surface: #111111; --border: #222222;
+      --text: #ffffff; --muted: #888888; --faint: #333333;
+      --accent: #ffffff; --font: 'Space Grotesk', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 400; line-height: 1.7; -webkit-font-smoothing: antialiased; max-width: 720px; margin: 0 auto; padding: 64px 32px 96px; }
+
+    .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 300; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 12px; }
+    .date { font-size: 13px; color: var(--muted); margin-bottom: 56px; }
+
+    .preview-link {
+      display: block; background: var(--surface); border: 1px solid var(--border);
+      padding: 20px 24px; margin-bottom: 56px; transition: border-color 0.2s;
+      text-decoration: none;
+    }
+    .preview-link:hover { border-color: var(--muted); }
+    .preview-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .preview-url { font-size: 18px; font-weight: 400; color: var(--text); }
+
+    section { margin-bottom: 48px; border-top: 1px solid var(--border); padding-top: 36px; }
+    h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    p { font-size: 15px; color: #cccccc; margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+
+    ul { margin: 0 0 16px 0; padding: 0; }
+    ul li { font-size: 15px; color: #cccccc; padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 12px; }
+    ul li::before { content: '—'; color: var(--faint); flex-shrink: 0; font-size: 12px; }
+    ul li:last-child { border-bottom: none; }
+
+    .checklist li { position: relative; }
+    .check { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; padding: 2px 8px; border: 1px solid; }
+    .check.done { color: #666; border-color: var(--faint); }
+    .check.pending { color: var(--text); border-color: var(--muted); }
+
+    .need-box { background: var(--surface); border: 1px solid var(--border); padding: 24px; margin-top: 24px; }
+    .need-box h3 { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .need-item { display: flex; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .need-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .need-num { font-size: 11px; font-weight: 600; color: var(--muted); flex-shrink: 0; width: 20px; }
+    .need-text { color: #cccccc; }
+    .need-text strong { color: var(--text); font-weight: 500; }
+    .need-text small { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+    .gumroad-box { background: var(--surface); border: 1px solid var(--border); padding: 24px; margin-top: 16px; }
+    .gumroad-box h3 { font-size: 13px; font-weight: 500; margin-bottom: 12px; }
+
+    .plan-step { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .plan-step:last-child { border-bottom: none; }
+    .step-num { font-size: 11px; font-weight: 600; color: var(--muted); flex-shrink: 0; width: 24px; padding-top: 2px; }
+    .step-content h4 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .step-content p { font-size: 13px; color: var(--muted); margin: 0; }
+
+    .footer-note { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 13px; color: var(--faint); }
+    .footer-note a { color: var(--muted); }
+
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+
+  <p class="eyebrow">EVO Creative Lab · para Rodrigo Rojas Mardones</p>
+  <h1>rojasmardones.com<br>Estado del proyecto</h1>
+  <p class="date">Junio 2026 · v2 preview</p>
+
+  <a class="preview-link" href="https://v2.rojasmardones.com" target="_blank">
+    <p class="preview-label">Preview en línea</p>
+    <p class="preview-url">v2.rojasmardones.com →</p>
+  </a>
+
+  <!-- WHY -->
+  <section>
+    <h2>Por qué empezamos de cero</h2>
+    <p>La versión anterior del sitio estaba construida sobre WordPress. Luis y yo trabajamos bastante en eso, y aprendimos en el proceso. Pero la conclusión fue clara: WordPress es la herramienta equivocada para este proyecto.</p>
+    <p>Un portfolio de artista no necesita un CMS con base de datos, actualizaciones de plugins, temas que se rompen solos, y un panel de administración que nadie va a usar. Todo eso suma complejidad sin agregarle nada real al sitio. El resultado era lento, frágil, y difícil de pulir.</p>
+    <p>Esta versión es HTML puro. Sin WordPress, sin PHP, sin nada en el medio entre el código y el navegador. Carga rápido, no se rompe solo, y cada detalle visual está bajo control. Con todo lo que hemos desarrollado últimamente, este enfoque nos permite enfocarnos en lo que importa: que el sitio se vea bien y muestre tu trabajo de la mejor manera posible.</p>
+  </section>
+
+  <!-- WHAT'S BUILT -->
+  <section>
+    <h2>Qué hay en esta versión</h2>
+    <p>Esta es la primera versión presentable del sitio nuevo. Está construido en HTML estático puro — sin WordPress, sin plugins, sin nada que se pueda romper solo. Es rápido, liviano, y fácil de actualizar.</p>
+    <ul class="checklist">
+      <li><span class="check done">Listo</span> Homepage con tu firma como logo principal</li>
+      <li><span class="check done">Listo</span> Galería de obras con lightbox (click en cualquier imagen)</li>
+      <li><span class="check done">Listo</span> Sección About con tu bio y exhibiciones</li>
+      <li><span class="check done">Listo</span> Sección de contacto con formulario y links directos</li>
+      <li><span class="check done">Listo</span> Botones "Digital print" en obras seleccionadas (ver abajo)</li>
+      <li><span class="check done">Listo</span> Aviso legal completo (requisito alemán §5 DDG)</li>
+      <li><span class="check done">Listo</span> Diseño mobile-first — funciona bien en celular</li>
+      <li><span class="check pending">Pendiente</span> Más obras en la galería</li>
+      <li><span class="check pending">Pendiente</span> Links reales de Gumroad para las impresiones</li>
+      <li><span class="check pending">Pendiente</span> Tu cuenta de Instagram</li>
+    </ul>
+  </section>
+
+  <!-- WHAT I NEED -->
+  <section>
+    <h2>Lo que necesito de ti</h2>
+    <p>Son tres cosas concretas para poder terminar el sitio y dejarlo publicado en rojasmardones.com.</p>
+
+    <div class="need-box">
+      <h3>Necesito que confirmes o entregues</h3>
+
+      <div class="need-item">
+        <span class="need-num">01</span>
+        <div class="need-text">
+          <strong>Tu cuenta de Instagram</strong>
+          <small>Solo el @handle. Lo pongo en el sitio y en la sección de contacto.</small>
+        </div>
+      </div>
+
+      <div class="need-item">
+        <span class="need-num">02</span>
+        <div class="need-text">
+          <strong>Confirma tu Gmail: inforodrigorojas@gmail.com</strong>
+          <small>Voy a usarlo para crear tu cuenta de Gumroad. Si prefieres otro correo, dímelo. Puedo crear la cuenta yo y pasarte el acceso después.</small>
+        </div>
+      </div>
+
+      <div class="need-item">
+        <span class="need-num">03</span>
+        <div class="need-text">
+          <strong>Inventario de obras</strong>
+          <small>Una lista de todas las obras que tienes fotografiadas y listas para publicar. Nombre, técnica, año. También cuáles quieres ofrecer como impresión digital.</small>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GUMROAD -->
+  <section>
+    <h2>Sobre Gumroad — vender impresiones digitales</h2>
+    <p>El sitio tiene integrada la opción de vender impresiones digitales directamente desde la galería. Cuando alguien hace click en "Digital print" en una obra, se abre un panel de compra sin salir del sitio.</p>
+    <p>La plataforma que vamos a usar se llama <strong>Gumroad</strong>. Funciona así:</p>
+
+    <div class="gumroad-box">
+      <h3>Cómo funciona</h3>
+      <ul>
+        <li>Creas un producto (tu imagen en alta resolución), le pones precio, y Gumroad genera un link</li>
+        <li>El comprador paga con tarjeta o PayPal — Gumroad cobra una comisión pequeña por transacción</li>
+        <li>El archivo llega directo al comprador por email — no tienes que hacer nada manual</li>
+        <li>Gumroad maneja el IVA europeo automáticamente — esto es importante porque estás en Alemania y tienes obligación legal de cobrarlo</li>
+        <li>Recibes los pagos en tu cuenta bancaria</li>
+      </ul>
+    </div>
+
+    <p style="margin-top: 16px;">Puedo crear la cuenta con tu correo y pasarte el acceso. O puedes hacerlo tú en <strong>gumroad.com</strong> — toma 5 minutos. Lo único que necesito después es el link de cada producto para conectarlo al sitio.</p>
+  </section>
+
+  <!-- PLAN -->
+  <section>
+    <h2>El plan</h2>
+    <p>La idea es trabajar en dos fases bien definidas.</p>
+
+    <div class="plan-step">
+      <span class="step-num">1</span>
+      <div class="step-content">
+        <h4>rojasmardones.com — cerrar esta versión</h4>
+        <p>Con tu feedback y los pendientes de arriba, dejamos el portfolio listo y lo publicamos en el dominio principal. Tiempo estimado: una semana una vez que tengamos todos los materiales.</p>
+      </div>
+    </div>
+
+    <div class="plan-step">
+      <span class="step-num">2</span>
+      <div class="step-content">
+        <h4>astrologyfoundme.com — rediseño completo</h4>
+        <p>Con el portfolio aprobado como referencia de estilo, arrancamos el sitio de astrología. Tiene requisitos distintos — necesita un sistema para publicar contenido seguido — pero el enfoque visual va a ser coherente con este.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEEDBACK -->
+  <section>
+    <h2>Tu feedback</h2>
+    <p>Entra a <a href="https://v2.rojasmardones.com" target="_blank">v2.rojasmardones.com</a> desde el celular también — quiero saber cómo se ve en tu dispositivo.</p>
+    <p>Anota lo que no te gusta, lo que te falta, lo que cambiarías. Sin filtro. Mientras más específico, mejor. Puedes responder esto por WhatsApp o por mail a <a href="mailto:aguilera.felipe@gmail.com">aguilera.felipe@gmail.com</a>.</p>
+  </section>
+
+  <div class="footer-note">
+    Preparado por Felipe Aguilera · <a href="https://evo.cl">EVO Creative Lab</a> · Junio 2026
+  </div>
+
+</body>
+</html>
