@@ -67,6 +67,20 @@
     .footer-note a { color: var(--muted); }
 
     a { color: inherit; }
+
+    /* Update log */
+    .update-log { margin-bottom: 56px; }
+    .log-entry { border: 1px solid #2a2a1a; background: #0f0f0a; padding: 24px; margin-bottom: 2px; }
+    .log-entry:first-child { border-top: 2px solid #c8b46a; }
+    .log-date { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #c8b46a; margin-bottom: 16px; }
+    .log-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid #1e1e12; font-size: 14px; align-items: baseline; }
+    .log-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .log-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; flex-shrink: 0; padding: 2px 7px; border: 1px solid; white-space: nowrap; }
+    .tag-done { color: #6fcf97; border-color: #2d5a3d; }
+    .tag-action { color: #c8b46a; border-color: #5a4a1a; }
+    .log-text { color: #cccccc; line-height: 1.6; }
+    .log-text strong { color: #fff; font-weight: 500; }
+    .log-text small { display: block; color: #666; font-size: 12px; margin-top: 3px; }
   </style>
 </head>
 <body>
@@ -74,6 +88,53 @@
   <p class="eyebrow">EVO Creative Lab · para Rodrigo Rojas Mardones</p>
   <h1>rojasmardones.com<br>Estado del proyecto</h1>
   <p class="date">Junio 2026 · v2 preview</p>
+
+  <div class="update-log">
+    <div class="log-entry">
+      <p class="log-date">Actualización · 9 de junio 2026</p>
+
+      <div class="log-item">
+        <span class="log-tag tag-done">Listo</span>
+        <div class="log-text">
+          <strong>Formulario de contacto activo</strong>
+          <small>El formulario del sitio ya envía mensajes directamente a hello@rojasmardones.com. Cuando alguien te escribe, te llega un email con su nombre, correo y mensaje. Puedes responder desde tu cliente de correo — el Reply-To apunta al visitante.</small>
+        </div>
+      </div>
+
+      <div class="log-item">
+        <span class="log-tag tag-done">Listo</span>
+        <div class="log-text">
+          <strong>Cuenta de correo hello@rojasmardones.com</strong>
+          <small>La casilla está activa en MXroute, configurada como dirección oficial del sitio. Todos los formularios y notificaciones llegan ahí. Las credenciales de acceso te las envío por WhatsApp.</small>
+        </div>
+      </div>
+
+      <div class="log-item">
+        <span class="log-tag tag-done">Listo</span>
+        <div class="log-text">
+          <strong>Cuenta de Gumroad — rojasmardones.gumroad.com</strong>
+          <small>La cuenta está creada y los primeros productos ya están publicados. Las credenciales de acceso te las envío por WhatsApp. <em>Importante:</em> las claves no aparecen en ningún documento web.</small>
+        </div>
+      </div>
+
+      <div class="log-item">
+        <span class="log-tag tag-action">Te toca</span>
+        <div class="log-text">
+          <strong>Configura tu cuenta bancaria en Gumroad</strong>
+          <small>Para recibir pagos necesitas conectar tu cuenta bancaria o PayPal en Gumroad. Entra a tu cuenta (credenciales por WhatsApp) y ve a Settings → Payouts. Sin esto los pagos quedan retenidos en la plataforma.</small>
+        </div>
+      </div>
+
+      <div class="log-item">
+        <span class="log-tag tag-action">Te toca</span>
+        <div class="log-text">
+          <strong>Revisión de obras — v2.rojasmardones.com/review/</strong>
+          <small>Creamos una página donde puedes ver todas tus fotos en secuencia y organizar tu inventario tú mismo. Solo tú sabes dónde empieza y termina cada obra. Entra desde el computador, marca la primera foto de cada obra, y llena nombre, técnica y año. Tu progreso se guarda automáticamente si tienes que pausar. Con eso podemos publicar muchas más obras en el sitio.</small>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <a class="preview-link" href="https://v2.rojasmardones.com" target="_blank">
     <p class="preview-label">Preview en línea</p>
@@ -100,8 +161,14 @@
       <li><span class="check done">Listo</span> Botones "Digital print" en obras seleccionadas (ver abajo)</li>
       <li><span class="check done">Listo</span> Aviso legal completo (requisito alemán §5 DDG)</li>
       <li><span class="check done">Listo</span> Diseño mobile-first — funciona bien en celular</li>
-      <li><span class="check pending">Pendiente</span> Más obras en la galería</li>
-      <li><span class="check pending">Pendiente</span> Links reales de Gumroad para las impresiones</li>
+      <li><span class="check done">Listo</span> Sección de comisiones con imagen de referencia</li>
+      <li><span class="check done">Listo</span> Badges de estado en obras (Original / Available / Print)</li>
+      <li><span class="check done">Listo</span> Tagline comercial en el hero</li>
+      <li><span class="check pending">Pendiente</span> Más obras en la galería (esperando revisión de inventario)</li>
+      <li><span class="check done">Listo</span> Cuenta de email hello@rojasmardones.com (MXroute)</li>
+      <li><span class="check done">Listo</span> Formulario de contacto activo — entrega en hello@rojasmardones.com</li>
+      <li><span class="check done">Listo</span> Cuenta de Gumroad — rojasmardones.gumroad.com</li>
+      <li><span class="check pending">Pendiente</span> Configurar datos de pago en Gumroad (cuenta bancaria / PayPal)</li>
       <li><span class="check pending">Pendiente</span> Tu cuenta de Instagram</li>
     </ul>
   </section>

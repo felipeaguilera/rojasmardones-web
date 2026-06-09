@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revisión de obras · Rodrigo Rojas Mardones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a; --surface: #111; --surface2: #161616;
+      --border: #1e1e1e; --border2: #2a2a2a;
+      --text: #fff; --muted: #666; --faint: #2e2e2e;
+      --accent: #c8b89a;
+      --font: 'Space Grotesk', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    .wrap    { max-width: 880px; margin: 0 auto; padding: 0 20px 96px; }
+    .page-top { max-width: 880px; margin: 0 auto; padding: 52px 20px 0; }
+
+    .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    h1 { font-size: clamp(24px,4vw,34px); font-weight: 300; letter-spacing: -.01em; margin-bottom: 20px; }
+    .intro { font-size: 14px; color: #888; border-top: 1px solid var(--border); padding-top: 18px; margin-bottom: 28px; max-width: 660px; }
+    .intro p { margin-bottom: 9px; }
+    .intro p:last-child { margin-bottom: 0; }
+    .intro strong { color: #bbb; font-weight: 500; }
+
+    /* Sticky bar */
+    .sticky {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(10,10,10,.96); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px; display: flex; align-items: center; gap: 14px;
+    }
+    .prog-track { flex: 1; height: 2px; background: var(--faint); }
+    .prog-fill  { height: 100%; background: var(--accent); width: 0%; transition: width .3s; }
+    .prog-label { font-size: 11px; color: var(--muted); white-space: nowrap; }
+    .btn-ghost {
+      font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      padding: 7px 14px; border: 1px solid #444; color: #ccc; background: none;
+      cursor: pointer; font-family: var(--font); transition: all .15s; white-space: nowrap;
+    }
+    .btn-ghost:hover { border-color: #888; color: #fff; }
+
+    /* Restore banner */
+    #restore-banner {
+      display: none;
+      max-width: 880px; margin: 0 auto;
+      background: #1a1a0f; border-bottom: 1px solid #3a3520;
+      padding: 12px 20px; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    #restore-banner p { font-size: 13px; color: #c8b46a; flex: 1; min-width: 200px; }
+    #restore-banner p span { color: #888; font-size: 11px; margin-left: 8px; }
+    .btn-restore { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 7px 16px; border: 1px solid #c8b46a; color: #c8b46a; background: none; cursor: pointer; font-family: var(--font); transition: all .15s; }
+    .btn-restore:hover { background: #c8b46a; color: #111; }
+    .btn-clear-ls { font-size: 11px; color: #444; background: none; border: none; cursor: pointer; font-family: var(--font); text-decoration: underline; }
+    .btn-clear-ls:hover { color: #888; }
+
+    /* Auto-save indicator */
+    #save-indicator { font-size: 10px; color: #333; letter-spacing: .06em; white-space: nowrap; transition: color .3s; }
+    #save-indicator.active { color: #666; }
+
+    /* Photo grid */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 108px);
+      gap: 3px; padding: 3px;
+      background: var(--surface); margin-bottom: 0;
+    }
+
+    /* Thumbnails */
+    .thumb {
+      position: relative; width: 108px; height: 108px;
+      overflow: hidden; background: #050505; cursor: pointer;
+    }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .75; transition: opacity .12s; }
+    .thumb:hover img { opacity: 1; }
+    .thumb-num { position: absolute; bottom: 3px; left: 4px; font-size: 9px; color: rgba(255,255,255,.3); font-family: monospace; pointer-events: none; }
+    .thumb-btn {
+      position: absolute; top: 0; left: 0; right: 0;
+      background: rgba(200,184,154,.92); color: #111;
+      font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      text-align: center; padding: 5px 4px; cursor: pointer;
+      transform: translateY(-100%); transition: transform .12s; pointer-events: none;
+    }
+    .thumb:hover .thumb-btn { transform: translateY(0); pointer-events: auto; }
+    .thumb.is-start img { opacity: 1; }
+    .thumb.is-start::after {
+      content: '▶'; position: absolute; top: 4px; right: 4px;
+      color: var(--accent); font-size: 10px; text-shadow: 0 0 4px #000;
+    }
+
+    /* Artwork marker */
+    .artwork-marker {
+      grid-column: 1 / -1;
+      background: var(--surface2);
+      border-top: 2px solid var(--accent);
+      padding: 18px 20px 0;
+    }
+    .marker-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .marker-num { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); flex-shrink: 0; }
+    .marker-from { font-size: 12px; color: var(--muted); }
+    .btn-rm { margin-left: auto; font-size: 11px; color: #3a3a3a; background: none; border: 1px solid #2a2a2a; padding: 3px 10px; cursor: pointer; font-family: var(--font); transition: all .12s; }
+    .btn-rm:hover { border-color: #555; color: #888; }
+
+    /* Form inside marker */
+    .marker-form { display: grid; gap: 13px; padding-bottom: 22px; }
+    .f-row  { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .f-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 13px; }
+    .field  { display: flex; flex-direction: column; gap: 5px; }
+    .field label { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    input[type=text], textarea {
+      background: var(--bg); border: 1px solid var(--border2);
+      color: var(--text); font-family: var(--font); font-size: 13px;
+      padding: 8px 11px; outline: none; transition: border-color .15s; width: 100%;
+    }
+    input[type=text]:focus, textarea:focus { border-color: #444; }
+    input::placeholder, textarea::placeholder { color: #303030; }
+    textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
+
+    /* Radio groups */
+    .rg { display: flex; }
+    .ro { flex: 1; }
+    .ro input { display: none; }
+    .ro label {
+      display: block; text-align: center; padding: 7px 3px;
+      font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+      cursor: pointer; border: 1px solid var(--border2); margin-left: -1px;
+      color: #3a3a3a; transition: all .1s; background: var(--bg); white-space: nowrap;
+    }
+    .ro:first-child label { margin-left: 0; }
+    .ro input:checked + label { background: var(--text); color: var(--bg); border-color: var(--text); z-index: 1; position: relative; }
+    .ro label:hover { border-color: #444; color: #888; }
+
+    /* No-markers hint */
+    .no-markers { grid-column: 1/-1; padding: 20px; text-align: center; font-size: 13px; color: #2a2a2a; }
+
+    /* Lightbox */
+    #lb { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,.94); cursor: zoom-out; align-items: center; justify-content: center; }
+    #lb.open { display: flex; }
+    #lb img { max-width: 92vw; max-height: 92vh; object-fit: contain; }
+    #lb-x { position: fixed; top: 18px; right: 22px; color: #555; font-size: 22px; cursor: pointer; }
+    #lb-x:hover { color: #fff; }
+    #lb-n { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #444; font-family: monospace; }
+
+    /* Submit */
+    .submit-section { background: var(--surface); border: 1px solid var(--border); padding: 28px; margin-top: 32px; }
+    .submit-section h2 { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .submit-section p { font-size: 14px; color: #888; margin-bottom: 14px; }
+    .btn-submit { width: 100%; background: #fff; color: #000; font-family: var(--font); font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; border: none; padding: 14px; cursor: pointer; transition: opacity .15s; }
+    .btn-submit:hover { opacity: .85; }
+    .btn-submit:disabled { opacity: .35; cursor: not-allowed; }
+
+    @media (max-width: 580px) {
+      .photo-grid { grid-template-columns: repeat(auto-fill, 80px); }
+      .thumb { width: 80px; height: 80px; }
+      .f-row, .f-row3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="lb">
+  <span id="lb-x">✕</span>
+  <img id="lb-img" src="" alt="">
+  <span id="lb-n"></span>
+</div>
+
+<div class="page-top">
+  <p class="eyebrow">rojasmardones.com · Revisión de obras · Junio 2026</p>
+  <h1>Cuéntame sobre tu trabajo,<br>Rodrigo.</h1>
+  <div class="intro">
+    <p>Abajo están <strong>todas tus fotos en secuencia</strong>, numeradas. Tú sabes mejor que nadie dónde empieza y termina cada obra.</p>
+    <p><strong>Cómo funciona:</strong> cuando veas la primera foto de una obra, pasa el mouse por encima y presiona <strong>"Nueva obra aquí"</strong>. Aparece un formulario donde llenas el nombre, técnica, y lo que sabes.</p>
+    <p><strong>Doble click</strong> en cualquier foto para verla en grande. Tu progreso se <strong>guarda automáticamente</strong> — puedes cerrar y volver cuando quieras.</p>
+  </div>
+</div>
+
+<div id="restore-banner">
+  <p>Tienes trabajo guardado <span id="restore-date"></span></p>
+  <button class="btn-restore" id="btn-restore">Continuar donde lo dejé</button>
+  <button class="btn-clear-ls" id="btn-clear-ls">Empezar de nuevo</button>
+</div>
+
+<div class="sticky">
+  <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+  <div class="prog-label" id="prog-label">0 obras marcadas</div>
+  <span id="save-indicator">—</span>
+  <button class="btn-ghost" onclick="addMarkerAtStart()">+ Primera obra</button>
+</div>
+
+<div class="wrap">
+  <form id="review-form" action="submit.php" method="POST">
+    <div class="photo-grid" id="grid"></div>
+    <div class="submit-section" id="submit-section">
+      <h2>Enviar respuestas</h2>
+      <p>Al enviar, Felipe recibe un email con todo el inventario y se genera una página de resumen que puedes guardar. Si algo quedó incompleto lo resolveremos por WhatsApp.</p>
+      <button type="submit" class="btn-submit" id="btn-submit">Enviar →</button>
+    </div>
+  </form>
+  <div style="margin-top:40px;padding-top:20px;border-top:1px solid #141414;font-size:11px;color:#252525;">
+    Preparado por Felipe Aguilera · EVO Creative Lab · para rojasmardones.com
+  </div>
+</div>
+
+<script>
+// ─── Constants ────────────────────────────────────────────────────
+const FIRST  = 3620;
+const LAST   = 3852;
+const LS_KEY = 'rr_review_v1';
+
+// ─── State ────────────────────────────────────────────────────────
+let mkCounter   = 0;   // ever-incrementing, never resets
+let artworkCount = 0;  // count of current markers in DOM
+
+// ─── Build grid ───────────────────────────────────────────────────
+function buildGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  const hint = document.createElement('div');
+  hint.className = 'no-markers';
+  hint.id = 'hint-msg';
+  hint.textContent = 'Pasa el mouse sobre la primera foto de una obra y presiona "Nueva obra aquí"';
+  grid.appendChild(hint);
+
+  for (let n = FIRST; n <= LAST; n++) {
+    const div = document.createElement('div');
+    div.className = 'thumb';
+    div.id = `th-${n}`;
+    div.dataset.num = n;
+    div.innerHTML = `
+      <img src="img/all/${n}.jpg" alt="${n}" loading="lazy">
+      <span class="thumb-num">${n}</span>
+      <div class="thumb-btn" onclick="event.stopPropagation();insertMarker(${n})">+ Nueva obra</div>`;
+    div.addEventListener('dblclick', () => openLb(n));
+    grid.appendChild(div);
+  }
+}
+
+// ─── Marker insertion ─────────────────────────────────────────────
+function addMarkerAtStart() {
+  const first = document.getElementById(`th-${FIRST}`);
+  if (!first) return;
+  if (first.previousElementSibling?.classList.contains('artwork-marker')) return;
+  createMarker(FIRST, first);
+  hideHint();
+}
+
+function insertMarker(n) {
+  const thumb = document.getElementById(`th-${n}`);
+  if (!thumb) return;
+  if (thumb.previousElementSibling?.classList.contains('artwork-marker')) return;
+  createMarker(n, thumb);
+  hideHint();
+}
+
+function hideHint() {
+  const h = document.getElementById('hint-msg');
+  if (h) h.style.display = 'none';
+}
+
+// ─── Create marker (optionally pre-filled from saved state) ───────
+function createMarker(startNum, beforeEl, prefill = null) {
+  mkCounter++;
+  const mkid = mkCounter;
+  artworkCount++;
+
+  const mk = document.createElement('div');
+  mk.className = 'artwork-marker';
+  mk.dataset.start = startNum;
+  mk.dataset.mkid  = mkid;
+  mk.innerHTML = markerHTML(mkid, artworkCount, startNum);
+
+  document.getElementById('grid').insertBefore(mk, beforeEl);
+  document.getElementById(`th-${startNum}`)?.classList.add('is-start');
+
+  // Pre-fill from saved state (localStorage restore)
+  if (prefill) {
+    const p = `a_mk${mkid}`;
+    setField(mk, `${p}_nombre`,   prefill.nombre);
+    setField(mk, `${p}_tecnica`,  prefill.tecnica);
+    setField(mk, `${p}_ano`,      prefill.ano);
+    setField(mk, `${p}_precio`,   prefill.precio);
+    setField(mk, `${p}_foto`,     prefill.foto);
+    setField(mk, `${p}_notas`,    prefill.notas);
+    setRadio(mk, `${p}_sitio`,    prefill.sitio);
+    setRadio(mk, `${p}_original`, prefill.original);
+    setRadio(mk, `${p}_print`,    prefill.print);
+  }
+
+  renumberMarkers();
+  updateProgress();
+  // Scroll into view only for new (non-restored) markers
+  if (!prefill) setTimeout(() => mk.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+  saveState();
+}
+
+function setField(ctx, name, val) {
+  const el = ctx.querySelector(`[name="${name}"]`);
+  if (el && val) el.value = val;
+}
+function setRadio(ctx, name, val) {
+  if (!val) return;
+  const el = ctx.querySelector(`input[name="${name}"][value="${val}"]`);
+  if (el) el.checked = true;
+}
+
+// ─── Remove marker ────────────────────────────────────────────────
+function removeMarker(mkid, startNum) {
+  document.querySelector(`.artwork-marker[data-mkid="${mkid}"]`)?.remove();
+  document.getElementById(`th-${startNum}`)?.classList.remove('is-start');
+  artworkCount = document.querySelectorAll('.artwork-marker').length;
+  renumberMarkers();
+  updateProgress();
+  saveState();
+  if (artworkCount === 0) {
+    const h = document.getElementById('hint-msg');
+    if (h) h.style.display = '';
+  }
+}
+
+// ─── Renumber visible markers ─────────────────────────────────────
+function renumberMarkers() {
+  document.querySelectorAll('.artwork-marker').forEach((mk, i) => {
+    const lbl = mk.querySelector('.marker-num');
+    if (lbl) lbl.textContent = `Obra ${i + 1}`;
+  });
+}
+
+// ─── Marker inner HTML ────────────────────────────────────────────
+function markerHTML(mkid, n, startNum) {
+  const p = `a_mk${mkid}`;
+  return `
+    <div class="marker-header">
+      <span class="marker-num">Obra ${n}</span>
+      <span class="marker-from">desde foto ${startNum}</span>
+      <input type="hidden" name="${p}_start" value="${startNum}">
+      <button type="button" class="btn-rm" onclick="removeMarker(${mkid},${startNum})">Eliminar</button>
+    </div>
+    <div class="marker-form">
+      <div class="f-row">
+        <div class="field">
+          <label>Nombre de la obra</label>
+          <input type="text" name="${p}_nombre" placeholder="¿Cómo la llamarías?">
+        </div>
+        <div class="field">
+          <label>Técnica / material</label>
+          <input type="text" name="${p}_tecnica" placeholder="Acrílico, tinta, escultura…">
+        </div>
+      </div>
+      <div class="f-row">
+        <div class="field">
+          <label>Año</label>
+          <input type="text" name="${p}_ano" placeholder="Ej: 2022">
+        </div>
+        <div class="field">
+          <label>Precio sugerido</label>
+          <input type="text" name="${p}_precio" placeholder="Ej: €350 original · €45 print">
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Incluir en el sitio web?</label>
+        <div class="rg">
+          <div class="ro"><input type="radio" name="${p}_sitio" id="${p}_s1" value="Sí"><label for="${p}_s1">Sí</label></div>
+          <div class="ro"><input type="radio" name="${p}_sitio" id="${p}_s2" value="No"><label for="${p}_s2">No</label></div>
+          <div class="ro"><input type="radio" name="${p}_sitio" id="${p}_s3" value="No sé todavía"><label for="${p}_s3">No sé todavía</label></div>
+        </div>
+      </div>
+      <div class="f-row3">
+        <div class="field">
+          <label>¿Original disponible?</label>
+          <div class="rg">
+            <div class="ro"><input type="radio" name="${p}_original" id="${p}_o1" value="Sí"><label for="${p}_o1">Sí</label></div>
+            <div class="ro"><input type="radio" name="${p}_original" id="${p}_o2" value="No"><label for="${p}_o2">No</label></div>
+            <div class="ro"><input type="radio" name="${p}_original" id="${p}_o3" value="No sé todavía"><label for="${p}_o3">No sé</label></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Impresión digital?</label>
+          <div class="rg">
+            <div class="ro"><input type="radio" name="${p}_print" id="${p}_p1" value="Sí"><label for="${p}_p1">Sí</label></div>
+            <div class="ro"><input type="radio" name="${p}_print" id="${p}_p2" value="No"><label for="${p}_p2">No</label></div>
+            <div class="ro"><input type="radio" name="${p}_print" id="${p}_p3" value="No sé todavía"><label for="${p}_p3">No sé</label></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Foto destacada (nº)</label>
+          <input type="text" name="${p}_foto" placeholder="Ej: 3624">
+        </div>
+      </div>
+      <div class="field">
+        <label>Notas — descripción, historia, correcciones</label>
+        <textarea name="${p}_notas" placeholder="Texto para el sitio, o cualquier aclaración sobre las fotos de este grupo…"></textarea>
+      </div>
+    </div>`;
+}
+
+// ─── Progress ─────────────────────────────────────────────────────
+function updateProgress() {
+  const c = document.querySelectorAll('.artwork-marker').length;
+  document.getElementById('prog-fill').style.width  = Math.min(c * 5, 100) + '%';
+  document.getElementById('prog-label').textContent =
+    c === 0 ? '0 obras marcadas' : c === 1 ? '1 obra marcada' : `${c} obras marcadas`;
+}
+
+// ─── localStorage ─────────────────────────────────────────────────
+let saveTimer = null;
+
+function saveState() {
+  const markers = [];
+  document.querySelectorAll('.artwork-marker').forEach(mk => {
+    const mkid = mk.dataset.mkid;
+    const start = parseInt(mk.dataset.start);
+    const p = `a_mk${mkid}`;
+    markers.push({
+      mkid, start,
+      nombre:   mk.querySelector(`[name="${p}_nombre"]`)?.value   || '',
+      tecnica:  mk.querySelector(`[name="${p}_tecnica"]`)?.value  || '',
+      ano:      mk.querySelector(`[name="${p}_ano"]`)?.value      || '',
+      precio:   mk.querySelector(`[name="${p}_precio"]`)?.value   || '',
+      foto:     mk.querySelector(`[name="${p}_foto"]`)?.value     || '',
+      notas:    mk.querySelector(`[name="${p}_notas"]`)?.value    || '',
+      sitio:    mk.querySelector(`input[name="${p}_sitio"]:checked`)?.value    || '',
+      original: mk.querySelector(`input[name="${p}_original"]:checked`)?.value || '',
+      print:    mk.querySelector(`input[name="${p}_print"]:checked`)?.value    || '',
+    });
+  });
+
+  localStorage.setItem(LS_KEY, JSON.stringify({
+    v: 1, ts: Date.now(), mkCounter, markers
+  }));
+
+  // Flash save indicator
+  const ind = document.getElementById('save-indicator');
+  ind.textContent = 'Guardado ✓';
+  ind.classList.add('active');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { ind.textContent = '—'; ind.classList.remove('active'); }, 2000);
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (!state?.markers?.length) return;
+    showRestoreBanner(state);
+  } catch(e) {
+    localStorage.removeItem(LS_KEY);
+  }
+}
+
+function showRestoreBanner(state) {
+  const count = state.markers.length;
+  const d     = new Date(state.ts);
+  const date  = d.toLocaleDateString('es-CL', { day:'numeric', month:'short' }) +
+                ' ' + d.toLocaleTimeString('es-CL', { hour:'2-digit', minute:'2-digit' });
+
+  document.getElementById('restore-date').textContent = `· ${count} obra${count !== 1 ? 's' : ''} · ${date}`;
+  document.getElementById('restore-banner').style.display = 'flex';
+
+  document.getElementById('btn-restore').onclick = () => {
+    document.getElementById('restore-banner').style.display = 'none';
+    restoreState(state);
+  };
+  document.getElementById('btn-clear-ls').onclick = () => {
+    if (confirm('¿Seguro que quieres borrar el trabajo guardado y empezar de nuevo?')) {
+      localStorage.removeItem(LS_KEY);
+      document.getElementById('restore-banner').style.display = 'none';
+    }
+  };
+}
+
+function restoreState(state) {
+  mkCounter    = state.mkCounter || 0;
+  artworkCount = 0;
+  hideHint();
+
+  // Sort by start photo just in case
+  const sorted = [...state.markers].sort((a,b) => a.start - b.start);
+
+  sorted.forEach(saved => {
+    // Override mkCounter so restored markers get their original mkid
+    mkCounter = parseInt(saved.mkid) - 1;
+    const thumb = document.getElementById(`th-${saved.start}`);
+    if (thumb) createMarker(saved.start, thumb, saved);
+  });
+
+  // Restore mkCounter to max mkid seen
+  mkCounter = Math.max(...sorted.map(s => parseInt(s.mkid)));
+}
+
+// Auto-save on any input change (debounced 600ms)
+let autoSaveTimer = null;
+document.getElementById('review-form').addEventListener('input', () => {
+  updateProgress();
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(saveState, 600);
+});
+
+// ─── Lightbox ─────────────────────────────────────────────────────
+function openLb(n) {
+  document.getElementById('lb-img').src = `img/all/${n}.jpg`;
+  document.getElementById('lb-n').textContent = `IMG_${n}`;
+  document.getElementById('lb').classList.add('open');
+}
+document.getElementById('lb').addEventListener('click',   () => document.getElementById('lb').classList.remove('open'));
+document.getElementById('lb-x').addEventListener('click', e => { e.stopPropagation(); document.getElementById('lb').classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('lb').classList.remove('open'); });
+
+// ─── Submit ───────────────────────────────────────────────────────
+document.getElementById('review-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!document.querySelectorAll('.artwork-marker').length) {
+    alert('Todavía no has marcado ninguna obra. Pasa el mouse sobre la primera foto de una obra y presiona "+ Nueva obra".');
+    return;
+  }
+  const btn = document.getElementById('btn-submit');
+  btn.textContent = 'Enviando…'; btn.disabled = true;
+  try {
+    const resp = await fetch(this.action, {
+      method: 'POST', body: new FormData(this), headers: { Accept: 'application/json' }
+    });
+    const data = await resp.json();
+    if (resp.ok && data.ok) {
+      localStorage.removeItem(LS_KEY); // clear saved state — work is done
+      document.getElementById('submit-section').innerHTML = `
+        <div style="padding:8px 0">
+          <p style="font-size:20px;font-weight:300;margin-bottom:12px;">¡Listo, Rodrigo. Gracias.</p>
+          <p style="font-size:14px;color:#777;margin-bottom:${data.url ? '20px' : '0'};">Recibí todo. Felipe te escribe por WhatsApp pronto.</p>
+          ${data.url ? `<a href="${data.url}" target="_blank" style="display:inline-block;border:1px solid #444;color:#ccc;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;text-decoration:none;">Ver resumen completo →</a>` : ''}
+        </div>`;
+    } else {
+      btn.textContent = 'Error — intenta de nuevo'; btn.disabled = false;
+    }
+  } catch {
+    btn.textContent = 'Error de red — intenta de nuevo'; btn.disabled = false;
+  }
+});
+
+// ─── Init ─────────────────────────────────────────────────────────
+buildGrid();
+loadState();
+</script>
+</body>
+</html>

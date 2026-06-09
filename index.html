@@ -295,7 +295,7 @@
         <div class="work-card-img"><img src="assets/RojasMardones-Art-Mandala-01-hires.jpg" alt="Mandala" loading="lazy"></div>
         <div class="work-card-caption">
           <div class="work-card-text"><p class="work-card-title">Mandala</p><p class="work-card-meta">Sánscrito: "Círculo"</p></div>
-          <a class="gumroad-button btn-buy" href="https://rodrigorojas.gumroad.com/l/mandala-i" target="_blank">Print <i class="ph ph-arrow-up-right"></i></a>
+          <a class="gumroad-button btn-buy" href="https://rojasmardones.gumroad.com/l/mandala">Print <i class="ph ph-arrow-up-right"></i></a>
         </div>
       </div>
 
@@ -327,7 +327,7 @@
         <div class="work-card-img"><img src="assets/RojasMardones-Art-Pluto-in-Aquarius.png" alt="Pluto in Aquarius" loading="lazy"></div>
         <div class="work-card-caption">
           <div class="work-card-text"><p class="work-card-title">Pluto in Aquarius</p><p class="work-card-meta">Digital · 2024</p></div>
-          <a class="gumroad-button btn-buy" href="https://rodrigorojas.gumroad.com/l/pluto-in-aquarius" target="_blank">Print <i class="ph ph-arrow-up-right"></i></a>
+          <a class="gumroad-button btn-buy" href="https://rojasmardones.gumroad.com/l/pluto-in-aquarius">Print <i class="ph ph-arrow-up-right"></i></a>
         </div>
       </div>
 
@@ -335,7 +335,7 @@
         <div class="work-card-img"><img src="assets/RojasMardones-Art-StellarPortrait-01.png" alt="Stellar Portrait" loading="lazy"></div>
         <div class="work-card-caption">
           <div class="work-card-text"><p class="work-card-title">Stellar Portrait</p><p class="work-card-meta">Digital · 2026</p></div>
-          <a class="gumroad-button btn-buy" href="https://rodrigorojas.gumroad.com/l/stellar-portrait" target="_blank">Print <i class="ph ph-arrow-up-right"></i></a>
+          <a class="gumroad-button btn-buy" href="https://rojasmardones.gumroad.com/l/stellar-portrait">Print <i class="ph ph-arrow-up-right"></i></a>
         </div>
       </div>
 
@@ -417,8 +417,7 @@
       </div>
 
       <!-- Form -->
-      <!-- Use Formspree: replace action URL with https://formspree.io/f/[your-id] — no PHP required -->
-      <form class="contact-form" action="https://formspree.io/f/REPLACE-WITH-ID" method="POST">
+      <form class="contact-form" id="contact-form" action="contact.php" method="POST">
         <div class="form-row">
           <div class="form-group">
             <label>Name</label>
@@ -433,8 +432,8 @@
           <label>Message</label>
           <textarea name="message" placeholder="Commission, print inquiry, collaboration…" required></textarea>
         </div>
-        <button type="submit" class="btn-submit">Send <i class="ph ph-arrow-right"></i></button>
-        <p class="form-note">Used only to respond to your message.</p>
+        <button type="submit" class="btn-submit" id="btn-contact-submit">Send <i class="ph ph-arrow-right"></i></button>
+        <p class="form-note" id="contact-note">Used only to respond to your message.</p>
       </form>
 
     </div>
@@ -544,6 +543,31 @@
       if (e.key === 'Escape') close();
       if (e.key === 'ArrowLeft') open((cur - 1 + data.length) % data.length);
       if (e.key === 'ArrowRight') open((cur + 1) % data.length);
+    });
+
+    // Contact form — PHP mail, no Formspree
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn  = document.getElementById('btn-contact-submit');
+      const note = document.getElementById('contact-note');
+      btn.textContent = 'Sending…'; btn.disabled = true;
+      try {
+        const resp = await fetch('contact.php', {
+          method: 'POST', body: new FormData(this), headers: { Accept: 'application/json' }
+        });
+        const data = await resp.json();
+        if (resp.ok && data.ok) {
+          this.innerHTML = '<p style="font-size:15px;color:#ccc;padding:8px 0">Thank you — Rodrigo will be in touch soon.</p>';
+        } else {
+          note.textContent = 'Something went wrong. Please email hello@rojasmardones.com directly.';
+          note.style.color = '#c06060';
+          btn.textContent = 'Send'; btn.disabled = false;
+        }
+      } catch {
+        note.textContent = 'Network error. Please try again or email directly.';
+        note.style.color = '#c06060';
+        btn.textContent = 'Send'; btn.disabled = false;
+      }
     });
   </script>
 </body>
