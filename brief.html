@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>rojasmardones.com — Estado del proyecto · Junio 2026</title>
+  <title>rojasmardones.com + astrologyfoundme.com — Estado del proyecto · Junio 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -21,14 +21,15 @@
     h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 300; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 12px; }
     .date { font-size: 13px; color: var(--muted); margin-bottom: 56px; }
 
+    .live-links { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 56px; }
     .preview-link {
       display: block; background: var(--surface); border: 1px solid var(--border);
-      padding: 20px 24px; margin-bottom: 56px; transition: border-color 0.2s;
+      padding: 20px 24px; transition: border-color 0.2s;
       text-decoration: none;
     }
     .preview-link:hover { border-color: var(--muted); }
     .preview-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-    .preview-url { font-size: 18px; font-weight: 400; color: var(--text); }
+    .preview-url { font-size: 16px; font-weight: 400; color: var(--text); }
 
     section { margin-bottom: 48px; border-top: 1px solid var(--border); padding-top: 36px; }
     h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
@@ -37,7 +38,7 @@
 
     ul { margin: 0 0 16px 0; padding: 0; }
     ul li { font-size: 15px; color: #cccccc; padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 12px; }
-    ul li::before { content: '—'; color: var(--faint); flex-shrink: 0; font-size: 12px; }
+    ul li::before { content: ""; color: var(--faint); flex-shrink: 0; font-size: 12px; }
     ul li:last-child { border-bottom: none; }
 
     .checklist li { position: relative; }
@@ -57,12 +58,6 @@
     .gumroad-box { background: var(--surface); border: 1px solid var(--border); padding: 24px; margin-top: 16px; }
     .gumroad-box h3 { font-size: 13px; font-weight: 500; margin-bottom: 12px; }
 
-    .plan-step { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
-    .plan-step:last-child { border-bottom: none; }
-    .step-num { font-size: 11px; font-weight: 600; color: var(--muted); flex-shrink: 0; width: 24px; padding-top: 2px; }
-    .step-content h4 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-    .step-content p { font-size: 13px; color: var(--muted); margin: 0; }
-
     .footer-note { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 13px; color: var(--faint); }
     .footer-note a { color: var(--muted); }
 
@@ -81,23 +76,60 @@
     .log-text { color: #cccccc; line-height: 1.6; }
     .log-text strong { color: #fff; font-weight: 500; }
     .log-text small { display: block; color: #666; font-size: 12px; margin-top: 3px; }
+
+    /* Closing callout */
+    .closing-box { background: #0d0d0d; border: 1px solid #2a2a2a; border-left: 3px solid #c8b46a; padding: 28px 32px; margin-top: 0; }
+    .closing-box p { font-size: 15px; color: #cccccc; margin-bottom: 10px; }
+    .closing-box p:last-child { margin-bottom: 0; }
+    .closing-box strong { color: #fff; }
+
+    @media (max-width: 560px) { .live-links { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-  <p class="eyebrow">EVO Creative Lab · para Rodrigo Rojas Mardones</p>
-  <h1>rojasmardones.com<br>Estado del proyecto</h1>
-  <p class="date">Junio 2026 · v2 preview</p>
+  <p class="eyebrow">EVO Creative Lab &middot; para Rodrigo Rojas Mardones</p>
+  <h1>rojasmardones.com<br>astrologyfoundme.com</h1>
+  <p class="date">Junio 2026 &middot; Ambos sitios en l&iacute;nea</p>
 
+  <!-- CLOSING CALLOUT -->
+  <div class="closing-box" style="margin-bottom: 56px;">
+    <p><strong>Los dos sitios est&aacute;n publicados y corriendo.</strong> La parte t&eacute;cnica est&aacute; terminada. Lo que queda para cerrar este ciclo est&aacute; en la secci&oacute;n "Lo que necesito de ti" m&aacute;s abajo.</p>
+    <p>Este documento es tu referencia operativa: links en vivo, pendientes, y c&oacute;mo funciona cada parte del sistema.</p>
+  </div>
+
+  <!-- UPDATE LOG -->
   <div class="update-log">
+
     <div class="log-entry">
-      <p class="log-date">Actualización · 9 de junio 2026</p>
+      <p class="log-date">Actualizaci&oacute;n &middot; 17 de junio 2026</p>
+
+      <div class="log-item">
+        <span class="log-tag tag-done">Listo</span>
+        <div class="log-text">
+          <strong>rojasmardones.com publicado en www</strong>
+          <small>El sitio nuevo ya es el sitio principal. rojasmardones.com apunta directamente al dise&ntilde;o v2. La versi&oacute;n anterior de WordPress queda archivada en el servidor.</small>
+        </div>
+      </div>
+
+      <div class="log-item">
+        <span class="log-tag tag-done">Listo</span>
+        <div class="log-text">
+          <strong>astrologyfoundme.com &mdash; nueva versi&oacute;n publicada</strong>
+          <small>Redise&ntilde;o completo desde cero. Ya no es una p&aacute;gina de WordPress. Es un minisite propio con paleta zodiacal, aurora animada y efecto de escritura progresiva. Ver secci&oacute;n m&aacute;s abajo.</small>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="log-entry">
+      <p class="log-date">Actualizaci&oacute;n &middot; 9 de junio 2026</p>
 
       <div class="log-item">
         <span class="log-tag tag-done">Listo</span>
         <div class="log-text">
           <strong>Formulario de contacto activo</strong>
-          <small>El formulario del sitio ya envía mensajes directamente a hello@rojasmardones.com. Cuando alguien te escribe, te llega un email con su nombre, correo y mensaje. Puedes responder desde tu cliente de correo — el Reply-To apunta al visitante.</small>
+          <small>El formulario del sitio ya env&iacute;a mensajes directamente a hello@rojasmardones.com. Cuando alguien te escribe, te llega un email con su nombre, correo y mensaje.</small>
         </div>
       </div>
 
@@ -105,160 +137,131 @@
         <span class="log-tag tag-done">Listo</span>
         <div class="log-text">
           <strong>Cuenta de correo hello@rojasmardones.com</strong>
-          <small>La casilla está activa en MXroute, configurada como dirección oficial del sitio. Todos los formularios y notificaciones llegan ahí. Las credenciales de acceso te las envío por WhatsApp.</small>
+          <small>La casilla est&aacute; activa en MXroute, configurada como direcci&oacute;n oficial del sitio. Credenciales por WhatsApp.</small>
         </div>
       </div>
 
       <div class="log-item">
         <span class="log-tag tag-done">Listo</span>
         <div class="log-text">
-          <strong>Cuenta de Gumroad — rojasmardones.gumroad.com</strong>
-          <small>La cuenta está creada y los primeros productos ya están publicados. Las credenciales de acceso te las envío por WhatsApp. <em>Importante:</em> las claves no aparecen en ningún documento web.</small>
-        </div>
-      </div>
-
-      <div class="log-item">
-        <span class="log-tag tag-action">Te toca</span>
-        <div class="log-text">
-          <strong>Configura tu cuenta bancaria en Gumroad</strong>
-          <small>Para recibir pagos necesitas conectar tu cuenta bancaria o PayPal en Gumroad. Entra a tu cuenta (credenciales por WhatsApp) y ve a Settings → Payouts. Sin esto los pagos quedan retenidos en la plataforma.</small>
-        </div>
-      </div>
-
-      <div class="log-item">
-        <span class="log-tag tag-action">Te toca</span>
-        <div class="log-text">
-          <strong>Revisión de obras — v2.rojasmardones.com/review/</strong>
-          <small>Creamos una página donde puedes ver todas tus fotos en secuencia y organizar tu inventario tú mismo. Solo tú sabes dónde empieza y termina cada obra. Entra desde el computador, marca la primera foto de cada obra, y llena nombre, técnica y año. Tu progreso se guarda automáticamente si tienes que pausar. Con eso podemos publicar muchas más obras en el sitio.</small>
+          <strong>Cuenta de Gumroad &mdash; rojasmardones.gumroad.com</strong>
+          <small>La cuenta est&aacute; creada y los primeros productos publicados. Credenciales por WhatsApp. Para recibir pagos falta conectar tu cuenta bancaria (ver pendientes).</small>
         </div>
       </div>
 
     </div>
   </div>
 
-  <a class="preview-link" href="https://v2.rojasmardones.com" target="_blank">
-    <p class="preview-label">Preview en línea</p>
-    <p class="preview-url">v2.rojasmardones.com →</p>
-  </a>
+  <!-- LIVE LINKS -->
+  <div class="live-links">
+    <a class="preview-link" href="https://www.rojasmardones.com" target="_blank">
+      <p class="preview-label">En l&iacute;nea ahora</p>
+      <p class="preview-url">rojasmardones.com &rarr;</p>
+    </a>
+    <a class="preview-link" href="https://www.astrologyfoundme.com" target="_blank">
+      <p class="preview-label">En l&iacute;nea ahora</p>
+      <p class="preview-url">astrologyfoundme.com &rarr;</p>
+    </a>
+  </div>
 
-  <!-- WHY -->
+  <!-- PENDING — RODRIGO'S ACTIONS -->
   <section>
-    <h2>Por qué empezamos de cero</h2>
-    <p>La versión anterior del sitio estaba construida sobre WordPress. Luis y yo trabajamos bastante en eso, y aprendimos en el proceso. Pero la conclusión fue clara: WordPress es la herramienta equivocada para este proyecto.</p>
-    <p>Un portfolio de artista no necesita un CMS con base de datos, actualizaciones de plugins, temas que se rompen solos, y un panel de administración que nadie va a usar. Todo eso suma complejidad sin agregarle nada real al sitio. El resultado era lento, frágil, y difícil de pulir.</p>
-    <p>Esta versión es HTML puro. Sin WordPress, sin PHP, sin nada en el medio entre el código y el navegador. Carga rápido, no se rompe solo, y cada detalle visual está bajo control. Con todo lo que hemos desarrollado últimamente, este enfoque nos permite enfocarnos en lo que importa: que el sitio se vea bien y muestre tu trabajo de la mejor manera posible.</p>
-  </section>
-
-  <!-- WHAT'S BUILT -->
-  <section>
-    <h2>Qué hay en esta versión</h2>
-    <p>Esta es la primera versión presentable del sitio nuevo. Está construido en HTML estático puro — sin WordPress, sin plugins, sin nada que se pueda romper solo. Es rápido, liviano, y fácil de actualizar.</p>
-    <ul class="checklist">
-      <li><span class="check done">Listo</span> Homepage con tu firma como logo principal</li>
-      <li><span class="check done">Listo</span> Galería de obras con lightbox (click en cualquier imagen)</li>
-      <li><span class="check done">Listo</span> Sección About con tu bio y exhibiciones</li>
-      <li><span class="check done">Listo</span> Sección de contacto con formulario y links directos</li>
-      <li><span class="check done">Listo</span> Botones "Digital print" en obras seleccionadas (ver abajo)</li>
-      <li><span class="check done">Listo</span> Aviso legal completo (requisito alemán §5 DDG)</li>
-      <li><span class="check done">Listo</span> Diseño mobile-first — funciona bien en celular</li>
-      <li><span class="check done">Listo</span> Sección de comisiones con imagen de referencia</li>
-      <li><span class="check done">Listo</span> Badges de estado en obras (Original / Available / Print)</li>
-      <li><span class="check done">Listo</span> Tagline comercial en el hero</li>
-      <li><span class="check pending">Pendiente</span> Más obras en la galería (esperando revisión de inventario)</li>
-      <li><span class="check done">Listo</span> Cuenta de email hello@rojasmardones.com (MXroute)</li>
-      <li><span class="check done">Listo</span> Formulario de contacto activo — entrega en hello@rojasmardones.com</li>
-      <li><span class="check done">Listo</span> Cuenta de Gumroad — rojasmardones.gumroad.com</li>
-      <li><span class="check pending">Pendiente</span> Configurar datos de pago en Gumroad (cuenta bancaria / PayPal)</li>
-      <li><span class="check pending">Pendiente</span> Tu cuenta de Instagram</li>
-    </ul>
-  </section>
-
-  <!-- WHAT I NEED -->
-  <section>
-    <h2>Lo que necesito de ti</h2>
-    <p>Son tres cosas concretas para poder terminar el sitio y dejarlo publicado en rojasmardones.com.</p>
+    <h2>Lo que necesito de ti para cerrar</h2>
+    <p>Tres cosas concretas. Sin esto el proyecto queda abierto.</p>
 
     <div class="need-box">
-      <h3>Necesito que confirmes o entregues</h3>
+      <h3>Tus pendientes</h3>
 
       <div class="need-item">
         <span class="need-num">01</span>
         <div class="need-text">
-          <strong>Tu cuenta de Instagram</strong>
-          <small>Solo el @handle. Lo pongo en el sitio y en la sección de contacto.</small>
+          <strong>Configura tu cuenta bancaria en Gumroad</strong>
+          <small>Sin esto los pagos quedan retenidos en la plataforma y no te llegan. Entra a rojasmardones.gumroad.com con las credenciales que te mand&eacute; por WhatsApp, ve a Settings &rarr; Payouts, y conecta tu cuenta bancaria o PayPal. Toma 5 minutos.</small>
         </div>
       </div>
 
       <div class="need-item">
         <span class="need-num">02</span>
         <div class="need-text">
-          <strong>Confirma tu Gmail: inforodrigorojas@gmail.com</strong>
-          <small>Voy a usarlo para crear tu cuenta de Gumroad. Si prefieres otro correo, dímelo. Puedo crear la cuenta yo y pasarte el acceso después.</small>
+          <strong>Revisa tu inventario de obras</strong>
+          <small>Entra a <a href="https://www.rojasmardones.com/review/" target="_blank" style="color: #c8b46a;">rojasmardones.com/review/</a> desde el computador. Ah&iacute; est&aacute;n todas tus fotos en secuencia. Marca la primera foto de cada obra y llena nombre, t&eacute;cnica y a&ntilde;o. Con eso puedo publicar muchas m&aacute;s obras en la galer&iacute;a.</small>
         </div>
       </div>
 
       <div class="need-item">
         <span class="need-num">03</span>
         <div class="need-text">
-          <strong>Inventario de obras</strong>
-          <small>Una lista de todas las obras que tienes fotografiadas y listas para publicar. Nombre, técnica, año. También cuáles quieres ofrecer como impresión digital.</small>
+          <strong>D&iacute;me si hay algo que cambiar</strong>
+          <small>Entra a los dos sitios desde el celular tambi&eacute;n. Si algo no te convence, anota qu&eacute; es y me lo mandas por WhatsApp. Mientras m&aacute;s espec&iacute;fico, m&aacute;s r&aacute;pido lo resolvemos.</small>
         </div>
       </div>
 
     </div>
   </section>
 
+  <!-- WHAT'S BUILT — ROJASMARDONES -->
+  <section>
+    <h2>rojasmardones.com &mdash; qu&eacute; hay en el sitio</h2>
+    <p>Portfolio en HTML est&aacute;tico puro. Sin WordPress, sin plugins, sin nada que se rompa solo. R&aacute;pido, liviano, y cada detalle visual bajo control.</p>
+    <ul class="checklist">
+      <li><span class="check done">Listo</span> Homepage con tu firma como logo principal</li>
+      <li><span class="check done">Listo</span> Galer&iacute;a de obras con lightbox</li>
+      <li><span class="check done">Listo</span> Secci&oacute;n About con bio y exhibiciones</li>
+      <li><span class="check done">Listo</span> Secci&oacute;n de contacto con formulario activo</li>
+      <li><span class="check done">Listo</span> Botones "Digital print" en obras seleccionadas</li>
+      <li><span class="check done">Listo</span> Aviso legal completo (requisito alem&aacute;n &sect;5 DDG)</li>
+      <li><span class="check done">Listo</span> Secci&oacute;n de comisiones con imagen de referencia</li>
+      <li><span class="check done">Listo</span> Badges de estado en obras (Original / Available / Print)</li>
+      <li><span class="check done">Listo</span> Cuenta de email hello@rojasmardones.com</li>
+      <li><span class="check done">Listo</span> Cuenta de Gumroad &mdash; rojasmardones.gumroad.com</li>
+      <li><span class="check pending">Pendiente</span> M&aacute;s obras en la galer&iacute;a (esperando revisi&oacute;n de inventario)</li>
+      <li><span class="check pending">Pendiente</span> Conectar cuenta bancaria en Gumroad</li>
+    </ul>
+  </section>
+
+  <!-- ASTROLOGYFOUNDME -->
+  <section>
+    <h2>astrologyfoundme.com &mdash; el minisite</h2>
+    <p>Este proyecto merec&iacute;a algo m&aacute;s que una entrada de WordPress. La nueva versi&oacute;n es un minisite propio, dise&ntilde;ado desde cero para mostrar cada post como una experiencia visual &uacute;nica.</p>
+    <p>C&oacute;mo funciona: cada post tiene asignado un signo zodiacal seg&uacute;n su fecha. Ese signo define una paleta de 5 colores que genera la animaci&oacute;n aurora en el fondo, colorea la secci&oacute;n de descripci&oacute;n, y da el car&aacute;cter visual de toda la p&aacute;gina. El t&iacute;tulo y el texto aparecen con efecto de escritura progresiva. Todo cambia cuando navegas entre posts.</p>
+    <ul class="checklist">
+      <li><span class="check done">Listo</span> Los 23 posts existentes est&aacute;n cargados y funcionando</li>
+      <li><span class="check done">Listo</span> Sistema de paleta zodiacal (12 signos, 5 colores cada uno)</li>
+      <li><span class="check done">Listo</span> Aurora animada reactiva por post</li>
+      <li><span class="check done">Listo</span> Efecto de escritura progresiva en t&iacute;tulo y descripci&oacute;n</li>
+      <li><span class="check done">Listo</span> Filmstrip de navegaci&oacute;n entre posts</li>
+      <li><span class="check done">Listo</span> Secci&oacute;n About, datos de contacto, aviso legal</li>
+      <li><span class="check pending">Pendiente</span> Sistema para agregar nuevos posts sin editar c&oacute;digo</li>
+    </ul>
+    <p style="margin-top: 16px;">El &uacute;nico pendiente t&eacute;cnico es un panel para que puedas agregar nuevas entradas t&uacute; mismo. Por ahora, cualquier post nuevo me lo mandas y lo agrego en menos de 10 minutos.</p>
+  </section>
+
   <!-- GUMROAD -->
   <section>
-    <h2>Sobre Gumroad — vender impresiones digitales</h2>
-    <p>El sitio tiene integrada la opción de vender impresiones digitales directamente desde la galería. Cuando alguien hace click en "Digital print" en una obra, se abre un panel de compra sin salir del sitio.</p>
-    <p>La plataforma que vamos a usar se llama <strong>Gumroad</strong>. Funciona así:</p>
+    <h2>Gumroad &mdash; vender impresiones digitales</h2>
+    <p>El sitio tiene integrada la opci&oacute;n de vender impresiones digitales directamente desde la galer&iacute;a. Cuando alguien hace click en "Digital print" en una obra, se abre un panel de compra sin salir del sitio.</p>
 
     <div class="gumroad-box">
-      <h3>Cómo funciona</h3>
+      <h3>C&oacute;mo funciona</h3>
       <ul>
-        <li>Creas un producto (tu imagen en alta resolución), le pones precio, y Gumroad genera un link</li>
-        <li>El comprador paga con tarjeta o PayPal — Gumroad cobra una comisión pequeña por transacción</li>
-        <li>El archivo llega directo al comprador por email — no tienes que hacer nada manual</li>
-        <li>Gumroad maneja el IVA europeo automáticamente — esto es importante porque estás en Alemania y tienes obligación legal de cobrarlo</li>
-        <li>Recibes los pagos en tu cuenta bancaria</li>
+        <li>Creas un producto (tu imagen en alta resoluci&oacute;n), le pones precio, y Gumroad genera un link</li>
+        <li>El comprador paga con tarjeta o PayPal &mdash; Gumroad cobra una comisi&oacute;n peque&ntilde;a por transacci&oacute;n</li>
+        <li>El archivo llega directo al comprador por email &mdash; no tienes que hacer nada manual</li>
+        <li>Gumroad maneja el IVA europeo autom&aacute;ticamente &mdash; importante porque est&aacute;s en Alemania</li>
+        <li>Recibes los pagos en tu cuenta bancaria una vez que la configures</li>
       </ul>
     </div>
-
-    <p style="margin-top: 16px;">Puedo crear la cuenta con tu correo y pasarte el acceso. O puedes hacerlo tú en <strong>gumroad.com</strong> — toma 5 minutos. Lo único que necesito después es el link de cada producto para conectarlo al sitio.</p>
   </section>
 
-  <!-- PLAN -->
+  <!-- WHY -->
   <section>
-    <h2>El plan</h2>
-    <p>La idea es trabajar en dos fases bien definidas.</p>
-
-    <div class="plan-step">
-      <span class="step-num">1</span>
-      <div class="step-content">
-        <h4>rojasmardones.com — cerrar esta versión</h4>
-        <p>Con tu feedback y los pendientes de arriba, dejamos el portfolio listo y lo publicamos en el dominio principal. Tiempo estimado: una semana una vez que tengamos todos los materiales.</p>
-      </div>
-    </div>
-
-    <div class="plan-step">
-      <span class="step-num">2</span>
-      <div class="step-content">
-        <h4>astrologyfoundme.com — rediseño completo</h4>
-        <p>Con el portfolio aprobado como referencia de estilo, arrancamos el sitio de astrología. Tiene requisitos distintos — necesita un sistema para publicar contenido seguido — pero el enfoque visual va a ser coherente con este.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEEDBACK -->
-  <section>
-    <h2>Tu feedback</h2>
-    <p>Entra a <a href="https://v2.rojasmardones.com" target="_blank">v2.rojasmardones.com</a> desde el celular también — quiero saber cómo se ve en tu dispositivo.</p>
-    <p>Anota lo que no te gusta, lo que te falta, lo que cambiarías. Sin filtro. Mientras más específico, mejor. Puedes responder esto por WhatsApp o por mail a <a href="mailto:aguilera.felipe@gmail.com">aguilera.felipe@gmail.com</a>.</p>
+    <h2>Por qu&eacute; cambiamos de WordPress</h2>
+    <p>Un portfolio de artista no necesita un CMS con base de datos, actualizaciones de plugins, y temas que se rompen solos. Todo eso suma complejidad sin agregarle nada real al sitio.</p>
+    <p>Esta versi&oacute;n es HTML puro. Sin WordPress, sin PHP, nada en el medio entre el c&oacute;digo y el navegador. Carga r&aacute;pido, no se rompe solo, y cada detalle visual est&aacute; bajo control. La misma l&oacute;gica aplica a astrologyfoundme: el resultado es mucho m&aacute;s potente y mucho m&aacute;s f&aacute;cil de mantener.</p>
   </section>
 
   <div class="footer-note">
-    Preparado por Felipe Aguilera · <a href="https://evo.cl">EVO Creative Lab</a> · Junio 2026
+    Preparado por Felipe Aguilera &middot; <a href="https://evo.cl">EVO Creative Lab</a> &middot; Junio 2026
   </div>
 
 </body>
